@@ -12,7 +12,7 @@ since = time.time()
 IMDIR = './test'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, densenet121, densenet161, inception,
 # googlenet
-name = 'inception'
+name = 'googlenet'
 MODEL = name + ".pth"
 
 # Load the model for testing

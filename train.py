@@ -3,7 +3,8 @@ import torch.utils.data as data
 from torch.utils.tensorboard import SummaryWriter
 import torch.optim as optim
 from torch.optim import lr_scheduler
-from nets import *
+import torch.nn as nn
+import torch
 import time, copy
 import multiprocessing
 from torchsummary import summary
@@ -12,8 +13,8 @@ from torchsummary import summary
 # Set training mode: finetune, transfer, scratch
 train_mode = 'finetune'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, densenet121, densenet161, inception
-# googlenet
-name = 'inception'
+# googlenet, inceptionv4
+name = 'inceptionv4'
 # Set the train and validation directory paths
 train_directory = 'data/train'
 valid_directory = 'data/val'
@@ -127,6 +128,19 @@ elif name == 'inception':
     num_ftrs = model_ft.AuxLogits.fc.in_features
     model_ft.AuxLogits.fc = nn.Linear(num_ftrs, num_classes)
     # Handle the primary net
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, num_classes)
+elif name == 'inceptionv4':
+    model_ft = models.inceptionv4(pretrained=True)
+    model_ft.aux_logits = False
+    # Handle the auxilary net
+    num_ftrs = model_ft.AuxLogits.fc.in_features
+    model_ft.AuxLogits.fc = nn.Linear(num_ftrs, num_classes)
+    # Handle the primary net
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, num_classes)
+elif name == 'googlenet':
+    model_ft = models.googlenet(pretrained=True)
     num_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_ftrs, num_classes)
 else:
