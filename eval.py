@@ -5,13 +5,16 @@ from torchvision import datasets, models, transforms
 import torch.utils.data as data
 import multiprocessing
 from sklearn.metrics import confusion_matrix
+import seaborn as sn
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # Paths for image directory and model
-EVAL_DIR = 'data/test'
+EVAL_DIR = 'DATASET/test'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, densenet121, densenet161, inception
 # googlenet
-name = 'googlenet'
-EVAL_MODEL = name + ".pth"
+name = 'densenet161'
+EVAL_MODEL = './models/' + name + ".pth"
 img_size = 512
 # Load the model for evaluation
 model = torch.load(EVAL_MODEL)
@@ -41,7 +44,8 @@ num_classes = len(eval_dataset.classes)
 dsize = len(eval_dataset)
 
 # Class label names
-class_names = ['Carpetweed', 'CommonRagweed', 'Crabgrass', 'Morningglory', 'PalmerAmaranth']
+class_names = ['Carpetweed', 'Crabgrass', 'Goosegrass', 'Morningglory', 'Nutsedge', 'PalmerAmaranth',
+               'Purslane', 'Ragweed', 'Sicklepod', 'SpottedSpurge', 'SpurredAnoda', 'Swinecress']
 
 # Initialize the prediction and label lists
 predlist = torch.zeros(0,dtype=torch.long, device='cpu')
@@ -71,15 +75,26 @@ print('Accuracy of the network on the {:d} test images: {:.2f}%'.format(dsize,
 conf_mat = confusion_matrix(lbllist.numpy(), predlist.numpy())
 print('Confusion Matrix')
 print('-'*16)
-print(conf_mat,'\n')
+print(conf_mat, '\n')
+
+
+plt.figure(figsize=(10, 7))
+df_cm = pd.DataFrame(conf_mat, index=class_names,
+                     columns=class_names)
+sn.set(font_scale=1.2)
+sn.heatmap(df_cm, annot=True, annot_kws={"size": 16})
+plt.tight_layout()
+plt.savefig('Confusing_Matrices/' + name + '_cm.png')
+plt.xticks(rotation=60, fontsize=16)
+plt.show()
+
 
 # Per-class accuracy
 class_accuracy = 100*conf_mat.diagonal()/conf_mat.sum(1)
 print('Per class accuracy')
 print('-'*18)
 for label, accuracy in zip(eval_dataset.classes, class_accuracy):
-     class_name=class_names[int(label)]
-     print('Accuracy of class %8s : %0.2f %%'%(class_name, accuracy))
+     print('Accuracy of class %8s : %0.2f %%'%(label, accuracy))
 
 '''
 Sample run: python eval.py eval_ds

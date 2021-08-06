@@ -4,7 +4,7 @@ from torch.utils.tensorboard import SummaryWriter
 import torch.optim as optim
 from torch.optim import lr_scheduler
 import torch.nn as nn
-import torch
+import torch, os
 import time, copy
 import multiprocessing
 from torchsummary import summary
@@ -14,19 +14,20 @@ from torchsummary import summary
 train_mode = 'finetune'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, densenet121, densenet161, inception
 # googlenet, inceptionv4
-name = 'inceptionv4'
+name = 'inception'
 # Set the train and validation directory paths
-train_directory = 'data/train'
-valid_directory = 'data/val'
+train_directory = 'DATASET/train'
+valid_directory = 'DATASET/val'
+
 # Set the model save path
 PATH = name + ".pth"
 
 # Batch size
 bs = 12
 # Number of epochs
-num_epochs = 30
+num_epochs = 20
 # Number of classes
-num_classes = 5
+num_classes = 12
 
 # resized image: 256, 512, 1080
 img_size = 512
@@ -37,10 +38,8 @@ num_cpu = multiprocessing.cpu_count()
 # Applying transforms to the data
 image_transforms = { 
     'train': transforms.Compose([
-        transforms.RandomResizedCrop(size=img_size, scale=(0.8, 1.0)),
-        transforms.RandomRotation(degrees=15),
+        transforms.RandomResizedCrop(size=img_size),
         transforms.RandomHorizontalFlip(),
-        transforms.CenterCrop(size=img_size),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406],
                              [0.229, 0.224, 0.225])
@@ -180,7 +179,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     best_acc = 0.0
 
     # Tensorboard summary
-    writer = SummaryWriter(log_dir='runs/' + name)
+    writer = SummaryWriter(log_dir=('runs/' + name))
     
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))

@@ -12,9 +12,9 @@ since = time.time()
 IMDIR = './test'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, densenet121, densenet161, inception,
 # googlenet
-name = 'googlenet'
-MODEL = name + ".pth"
-
+name = 'densenet161'
+MODEL = './models/' + name + ".pth"
+img_size = 512
 # Load the model for testing
 model = torch.load(MODEL)
 model.eval()
@@ -31,8 +31,8 @@ rows, cols = 3, 3
 
 # Preprocessing transformations
 preprocess = transforms.Compose([
-        transforms.Resize(size=256),
-        transforms.CenterCrop(size=224),
+        transforms.Resize(size=img_size),
+        transforms.CenterCrop(size=img_size),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406],
                              [0.229, 0.224, 0.225])
