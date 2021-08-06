@@ -11,9 +11,9 @@ import matplotlib.pyplot as plt
 
 # Paths for image directory and model
 EVAL_DIR = 'DATASET/test'
-# Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, densenet121, densenet161, inception
-# googlenet
-name = 'densenet161'
+# Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
+# densenet121, densenet161, densenet169,  inception, inceptionv4, googlenet,
+name = 'densenet169'
 EVAL_MODEL = './models/' + name + ".pth"
 img_size = 512
 # Load the model for evaluation

@@ -12,9 +12,9 @@ from torchsummary import summary
 # Construct argument parser
 # Set training mode: finetune, transfer, scratch
 train_mode = 'finetune'
-# Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, densenet121, densenet161, inception
-# googlenet, inceptionv4
-name = 'inception'
+# Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
+# densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet,
+name = 'densenet169'
 # Set the train and validation directory paths
 train_directory = 'DATASET/train'
 valid_directory = 'DATASET/val'
@@ -110,11 +110,18 @@ elif name == 'vgg11':
 elif name == 'vgg16':
     model_ft = models.vgg16(pretrained=True)
     model_ft.classifier[6] = nn.Linear(4096, num_classes)
+elif name == 'vgg19':
+    model_ft = models.vgg19(pretrained=True)
+    model_ft.classifier[6] = nn.Linear(4096, num_classes)
 elif name == 'squeezenet':
     model_ft = models.squeezenet1_0(pretrained=True)
     model_ft.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1, 1), stride=(1, 1))
 elif name == 'densenet121':
     model_ft = models.densenet121(pretrained=True)
+    num_ftrs = model_ft.classifier.in_features
+    model_ft.classifier = nn.Linear(num_ftrs, num_classes)
+elif name == 'densenet169':
+    model_ft = models.densenet169(pretrained=True)
     num_ftrs = model_ft.classifier.in_features
     model_ft.classifier = nn.Linear(num_ftrs, num_classes)
 elif name == 'densenet161':
