@@ -12,9 +12,11 @@ import matplotlib.pyplot as plt
 # Paths for image directory and model
 EVAL_DIR = 'DATASET/test'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
-# densenet121, densenet161, densenet169,  inception, inceptionv4, googlenet,
-name = 'densenet161'
-EVAL_MODEL = './models/' + name + ".pth"
+# densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
+# mobilenet_v3_small, mobilenet_v3_large, shufflenet_v2_x0_5, shufflenet_v2_x1_0,
+# inceptionresnetv2, nasnetalarge
+model_name = 'inceptionresnetv2'
+EVAL_MODEL = './models/' + model_name + ".pth"
 img_size = 512
 # Load the model for evaluation
 model = torch.load(EVAL_MODEL)
@@ -85,7 +87,7 @@ sn.set(font_scale=1.2)
 sn.heatmap(df_cm, annot=True, annot_kws={"size": 16})
 plt.tight_layout()
 plt.xticks(rotation=60, fontsize=16)
-plt.savefig('Confusing_Matrices/' + name + '_cm.png')
+plt.savefig('Confusing_Matrices/' + model_name + '_cm.png')
 plt.show()
 
 

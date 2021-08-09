@@ -8,19 +8,23 @@ import torch, os
 import time, copy
 import multiprocessing
 from torchsummary import summary
+import pretrainedmodels  # for inception-v4 and xception
+
 
 # Construct argument parser
 # Set training mode: finetune, transfer, scratch
 train_mode = 'finetune'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
-# densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet,
-name = 'densenet169'
+# densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
+# mobilenet_v3_small, mobilenet_v3_large, shufflenet_v2_x0_5, shufflenet_v2_x1_0,
+# inceptionresnetv2, nasnetalarge, nasnetamobile, senet154
+model_name = 'nasnetamobile'
 # Set the train and validation directory paths
 train_directory = 'DATASET/train'
 valid_directory = 'DATASET/val'
 
 # Set the model save path
-PATH = name + ".pth"
+PATH = model_name + ".pth"
 
 # Batch size
 bs = 12
@@ -70,8 +74,8 @@ dataloaders = {
     'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
                             num_workers=num_cpu, pin_memory=True, drop_last=True),
     'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
-                            num_workers=num_cpu, pin_memory=True, drop_last=True)
-}
+                            num_workers=num_cpu, pin_memory=True, drop_last=True)}
+
 
 # Class names or target labels
 class_names = dataset['train'].classes
@@ -81,53 +85,52 @@ print("Classes:", class_names)
 print("Training-set size:", dataset_sizes['train'],
       "\nValidation-set size:", dataset_sizes['valid'])
 
-# Set default device as gpu, if available
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 print("\nLoading pretrained-model for finetuning ...\n")
+model_ft = None
 
-if name == 'resnet18':
+if model_name == 'resnet18':
     # Modify fc layers to match num_classes
     model_ft = models.resnet18(pretrained=True)
     num_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_ftrs, num_classes)
-elif name == 'resnet50':
+elif model_name == 'resnet50':
     # Modify fc layers to match num_classes
     model_ft = models.resnet50(pretrained=True)
     num_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_ftrs, num_classes)
-elif name == 'resnet101':
+elif model_name == 'resnet101':
     # Modify fc layers to match num_classes
     model_ft = models.resnet101(pretrained=True)
     num_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_ftrs, num_classes)
-elif name == 'alexnet':
+elif model_name == 'alexnet':
     model_ft = models.alexnet(pretrained=True)
     model_ft.classifier[6] = nn.Linear(4096, num_classes)
-elif name == 'vgg11':
+elif model_name == 'vgg11':
     model_ft = models.vgg11(pretrained=True)
     model_ft.classifier[6] = nn.Linear(4096, num_classes)
-elif name == 'vgg16':
+elif model_name == 'vgg16':
     model_ft = models.vgg16(pretrained=True)
     model_ft.classifier[6] = nn.Linear(4096, num_classes)
-elif name == 'vgg19':
+elif model_name == 'vgg19':
     model_ft = models.vgg19(pretrained=True)
     model_ft.classifier[6] = nn.Linear(4096, num_classes)
-elif name == 'squeezenet':
+elif model_name == 'squeezenet':
     model_ft = models.squeezenet1_0(pretrained=True)
     model_ft.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1, 1), stride=(1, 1))
-elif name == 'densenet121':
+elif model_name == 'densenet121':
     model_ft = models.densenet121(pretrained=True)
     num_ftrs = model_ft.classifier.in_features
     model_ft.classifier = nn.Linear(num_ftrs, num_classes)
-elif name == 'densenet169':
+elif model_name == 'densenet169':
     model_ft = models.densenet169(pretrained=True)
     num_ftrs = model_ft.classifier.in_features
     model_ft.classifier = nn.Linear(num_ftrs, num_classes)
-elif name == 'densenet161':
+elif model_name == 'densenet161':
     model_ft = models.densenet161(pretrained=True)
     num_ftrs = model_ft.classifier.in_features
-elif name == 'inception':
+elif model_name == 'inception':
     model_ft = models.inception_v3(pretrained=True)
     model_ft.aux_logits = False
     # Handle the auxilary net
@@ -136,33 +139,64 @@ elif name == 'inception':
     # Handle the primary net
     num_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_ftrs, num_classes)
-elif name == 'inceptionv4':
-    model_ft = models.inceptionv4(pretrained=True)
-    model_ft.aux_logits = False
-    # Handle the auxilary net
-    num_ftrs = model_ft.AuxLogits.fc.in_features
-    model_ft.AuxLogits.fc = nn.Linear(num_ftrs, num_classes)
-    # Handle the primary net
-    num_ftrs = model_ft.fc.in_features
-    model_ft.fc = nn.Linear(num_ftrs, num_classes)
-elif name == 'googlenet':
+elif model_name == 'inceptionv4':
+    model_ft = pretrainedmodels.inceptionv4(pretrained='imagenet')
+    num_ftrs = model_ft.last_linear.in_features
+    model_ft.last_linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'googlenet':
     model_ft = models.googlenet(pretrained=True)
     num_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'xception':
+    model_ft = pretrainedmodels.xception(pretrained='imagenet')
+    num_ftrs = model_ft.last_linear.in_features
+    model_ft.last_linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'mobilenet_v2':
+    model_ft = models.mobilenet_v2(pretrained=True)
+    model_ft.classifier[1] = nn.Linear(model_ft.last_channel, num_classes)
+elif model_name == 'mobilenet_v3_small':
+    model_ft = models.mobilenet_v3_small(pretrained=True)
+    model_ft.classifier[3] = nn.Linear(model_ft.classifier[3].in_features, num_classes)
+elif model_name == 'mobilenet_v3_large':
+    model_ft = models.mobilenet_v3_large(pretrained=True)
+    model_ft.classifier[3] = nn.Linear(model_ft.classifier[3].in_features, num_classes)
+elif model_name == 'shufflenet_v2_x0_5':
+    model_ft = models.shufflenet_v2_x0_5(pretrained=True)
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'shufflenet_v2_x1_0':
+    model_ft = models.shufflenet_v2_x1_0(pretrained=True)
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'inceptionresnetv2':
+    model_ft = pretrainedmodels.inceptionresnetv2(pretrained='imagenet')
+    num_ftrs = model_ft.last_linear.in_features
+    model_ft.last_linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'nasnetamobile':
+    model_ft = pretrainedmodels.nasnetamobile(num_classes=1000, pretrained='imagenet')
+    num_ftrs = model_ft.last_linear.in_features
+    model_ft.last_linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'senet154':
+    model_ft = pretrainedmodels.senet154(pretrained='imagenet')
+    num_ftrs = model_ft.last_linear.in_features
+    model_ft.last_linear = nn.Linear(num_ftrs, num_classes)
 else:
     print("Invalid model name, exiting...")
     exit()
 
 # Transfer the model to GPU
+# Set default device as gpu, if available
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# model_ft = nn.DataParallel(model_ft)
 model_ft = model_ft.to(device)
 
 # Print model summary
 print('Model Summary:-\n')
 for num, (name, param) in enumerate(model_ft.named_parameters()):
     print(num, name, param.requires_grad )
-if name == 'inception':
+if model_name == 'inception':
     summary(model_ft, input_size=(3, 299, 299))
-elif name == 'densenet121' or 'densenet161':
+elif model_name == 'densenet121' or 'densenet161':
     pass
 else:
     summary(model_ft, input_size=(3, img_size, img_size))
@@ -186,7 +220,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     best_acc = 0.0
 
     # Tensorboard summary
-    writer = SummaryWriter(log_dir=('runs/' + name))
+    writer = SummaryWriter(log_dir=('./runs/' + model_name))
     
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
