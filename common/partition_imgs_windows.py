@@ -77,7 +77,7 @@ def main():
     parser.add_argument(
         '-r', '--ratio_list',
         help='The ratio of the number of test images over the total number of images. The default is 0.1.',
-        default=[0.7, 0.2, 0.1],
+        default=[0.65, 0.2, 0.15],
         type=list)
     args = parser.parse_args()
 

@@ -9,6 +9,7 @@ import time, copy
 import multiprocessing
 from torchsummary import summary
 import pretrainedmodels  # for inception-v4 and xception
+from efficientnet_pytorch import EfficientNet
 
 
 # Construct argument parser
@@ -17,8 +18,9 @@ train_mode = 'finetune'
 # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
 # densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
 # mobilenet_v3_small, mobilenet_v3_large, shufflenet_v2_x0_5, shufflenet_v2_x1_0,
-# inceptionresnetv2, nasnetalarge, nasnetamobile, senet154
-model_name = 'nasnetamobile'
+# inceptionresnetv2, nasnetalarge, nasnetamobile, senet154, se_resnet50, dpn68, mnasnet1_0, efficientnet-b0
+# efficientnet-b1, efficientnet-b2, efficientnet-b3, efficientnet-b4
+model_name = 'efficientnet-b5'
 # Set the train and validation directory paths
 train_directory = 'DATASET/train'
 valid_directory = 'DATASET/val'
@@ -130,6 +132,7 @@ elif model_name == 'densenet169':
 elif model_name == 'densenet161':
     model_ft = models.densenet161(pretrained=True)
     num_ftrs = model_ft.classifier.in_features
+    model_ft.classifier = nn.Linear(num_ftrs, num_classes)
 elif model_name == 'inception':
     model_ft = models.inception_v3(pretrained=True)
     model_ft.aux_logits = False
@@ -176,10 +179,31 @@ elif model_name == 'nasnetamobile':
     model_ft = pretrainedmodels.nasnetamobile(num_classes=1000, pretrained='imagenet')
     num_ftrs = model_ft.last_linear.in_features
     model_ft.last_linear = nn.Linear(num_ftrs, num_classes)
-elif model_name == 'senet154':
-    model_ft = pretrainedmodels.senet154(pretrained='imagenet')
+elif model_name == 'dpn68':
+    model_ft = pretrainedmodels.dpn68(pretrained='imagenet')
+    model_ft.last_linear = nn.Conv2d(832, num_classes, kernel_size=(1, 1), stride=(1, 1))
+elif model_name == 'polynet':
+    model_ft = pretrainedmodels.polynet(num_classes=1000, pretrained='imagenet')
     num_ftrs = model_ft.last_linear.in_features
     model_ft.last_linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'mnasnet1_0':
+    model_ft = models.mnasnet1_0(pretrained=True)
+    num_ftrs = model_ft.classifier[1].in_features
+    model_ft.classifier[1] = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'efficientnet-b0':
+    model_ft = EfficientNet.from_pretrained('efficientnet-b0', num_classes=num_classes)
+elif model_name == 'efficientnet-b1':
+    model_ft = EfficientNet.from_pretrained('efficientnet-b1', num_classes=num_classes)
+elif model_name == 'efficientnet-b2':
+    model_ft = EfficientNet.from_pretrained('efficientnet-b2', num_classes=num_classes)
+elif model_name == 'efficientnet-b3':
+    model_ft = EfficientNet.from_pretrained('efficientnet-b3', num_classes=num_classes)
+elif model_name == 'efficientnet-b4':
+    model_ft = EfficientNet.from_pretrained('efficientnet-b4', num_classes=num_classes)
+elif model_name == 'efficientnet-b5':
+    model_ft = EfficientNet.from_pretrained('efficientnet-b5', num_classes=num_classes)
+elif model_name == 'efficientnet-b6':
+    model_ft = EfficientNet.from_pretrained('efficientnet-b6', num_classes=num_classes)
 else:
     print("Invalid model name, exiting...")
     exit()
@@ -202,6 +226,8 @@ else:
     summary(model_ft, input_size=(3, img_size, img_size))
 print(model_ft)
 
+pytorch_total_params = sum(p.numel() for p in model_ft.parameters() if p.requires_grad)
+print("Total parameters:", pytorch_total_params)
 # Loss function
 criterion = nn.CrossEntropyLoss()
 

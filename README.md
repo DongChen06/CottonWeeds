@@ -28,3 +28,5 @@ Deep Learning Models for cotton&weeds classification.
 - [Pretrained models for Pytorch](https://github.com/Cadene/pretrained-models.pytorch)
 - [Pytorch-Image-Classification](https://github.com/anilsathyan7/pytorch-image-classification)
 - [Image Similarity](https://github.com/ryanfwy/image-similarity)
+- [EfficientNet PyTorch](https://github.com/lukemelas/EfficientNet-PyTorch)
+- [How do I check the number of parameters of a model?](https://discuss.pytorch.org/t/how-do-i-check-the-number-of-parameters-of-a-model/4325/9)

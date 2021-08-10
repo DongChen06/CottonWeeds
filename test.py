@@ -14,7 +14,7 @@ IMDIR = './test'
 # densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
 # mobilenet_v3_small, mobilenet_v3_large, shufflenet_v2_x0_5, shufflenet_v2_x1_0,
 # inceptionresnetv2, nasnetalarge
-model_name = 'inceptionresnetv2'
+model_name = 'efficientnet-b5'
 MODEL = './models/' + model_name + ".pth"
 
 # Load the model for testing
