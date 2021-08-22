@@ -5,44 +5,63 @@ import torch.optim as optim
 from torch.optim import lr_scheduler
 import torch.nn as nn
 import torch, os
+# for reproducing
+torch.manual_seed(66)
+torch.backends.cudnn.benchmark = False
+torch.backends.cudnn.deterministic = True
+
 import time, copy
 import multiprocessing
 from torchsummary import summary
 import pretrainedmodels  # for inception-v4 and xception
 from efficientnet_pytorch import EfficientNet
+import csv
+import argparse
 
 
-# Construct argument parser
-# Set training mode: finetune, transfer, scratch
-train_mode = 'finetune'
-# Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
-# densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
-# mobilenet_v3_small, mobilenet_v3_large, shufflenet_v2_x0_5, shufflenet_v2_x1_0,
-# inceptionresnetv2, nasnetalarge, nasnetamobile, senet154, se_resnet50, dpn68, mnasnet1_0, efficientnet-b0
-# efficientnet-b1, efficientnet-b2, efficientnet-b3, efficientnet-b4
-model_name = 'efficientnet-b5'
+def parse_args():
+    parser = argparse.ArgumentParser(description='Train CottonWeed Classifier')
+    # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
+    # densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
+    # mobilenet_v3_small, mobilenet_v3_large, inceptionresnetv2, dpn68, mnasnet1_0, efficientnet-b0
+    # efficientnet-b1, efficientnet-b2, efficientnet-b3, efficientnet-b4, efficientnet-b5
+    parser.add_argument('--model_name', type=str, required=False, default='alexnet',
+                        help="choose a deep learning model")
+    parser.add_argument('--train_mode', type=str, required=False, default='finetune',
+                        help="Set training mode: finetune, transfer, scratch")
+    parser.add_argument('--num_classes', type=int, required=False, default=15, help="Number of Classes")
+    parser.add_argument('--epochs', type=int, required=False, default=50, help="Training Epochs")
+    parser.add_argument('--batch_size', type=int, required=False, default=12, help="Training batch size")
+    parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
+    args = parser.parse_args()
+    return args
+
+
+args = parse_args()
+num_classes = args.num_classes
+model_name = args.model_name
+train_mode = args.train_mode
+num_epochs = args.epochs
+bs = args.batch_size
+img_size = args.img_size
 # Set the train and validation directory paths
-train_directory = 'DATASET/train'
-valid_directory = 'DATASET/val'
+train_directory = '/home/dong9/Downloads/DATA_0820/CottonWeedDataset/train'
+valid_directory = '/home/dong9/Downloads/DATA_0820/CottonWeedDataset/val'
+
+if not os.path.isfile('train_performance.csv'):
+    with open('train_performance.csv', mode='w') as csv_file:
+        fieldnames = ['Model', 'Training Time', 'Trainable Parameters', 'Best Train Acc', 'Best Train Epoch',
+                      'Best Val Acc', 'Best Val Epoch']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
 
 # Set the model save path
 PATH = model_name + ".pth"
-
-# Batch size
-bs = 12
-# Number of epochs
-num_epochs = 20
-# Number of classes
-num_classes = 12
-
-# resized image: 256, 512, 1080
-img_size = 512
-
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 
 # Applying transforms to the data
-image_transforms = { 
+image_transforms = {
     'train': transforms.Compose([
         transforms.RandomResizedCrop(size=img_size),
         transforms.RandomHorizontalFlip(),
@@ -58,13 +77,13 @@ image_transforms = {
                              [0.229, 0.224, 0.225])
     ])
 }
- 
+
 # Load data from folders
 dataset = {
     'train': datasets.ImageFolder(root=train_directory, transform=image_transforms['train']),
     'valid': datasets.ImageFolder(root=valid_directory, transform=image_transforms['valid'])
 }
- 
+
 # Size of train and validation data
 dataset_sizes = {
     'train': len(dataset['train']),
@@ -74,19 +93,17 @@ dataset_sizes = {
 # Create iterators for data loading
 dataloaders = {
     'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
-                            num_workers=num_cpu, pin_memory=True, drop_last=True),
+                             num_workers=num_cpu, pin_memory=True, drop_last=True),
     'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
-                            num_workers=num_cpu, pin_memory=True, drop_last=True)}
-
+                             num_workers=num_cpu, pin_memory=True, drop_last=True)}
 
 # Class names or target labels
 class_names = dataset['train'].classes
 print("Classes:", class_names)
- 
+
 # Print the train and validation data sizes
 print("Training-set size:", dataset_sizes['train'],
       "\nValidation-set size:", dataset_sizes['valid'])
-
 
 print("\nLoading pretrained-model for finetuning ...\n")
 model_ft = None
@@ -217,7 +234,7 @@ model_ft = model_ft.to(device)
 # Print model summary
 print('Model Summary:-\n')
 for num, (name, param) in enumerate(model_ft.named_parameters()):
-    print(num, name, param.requires_grad )
+    print(num, name, param.requires_grad)
 if model_name == 'inception':
     summary(model_ft, input_size=(3, 299, 299))
 elif model_name == 'densenet121' or 'densenet161':
@@ -227,7 +244,7 @@ else:
 print(model_ft)
 
 pytorch_total_params = sum(p.numel() for p in model_ft.parameters() if p.requires_grad)
-print("Total parameters:", pytorch_total_params)
+# print("Total parameters:", pytorch_total_params)
 # Loss function
 criterion = nn.CrossEntropyLoss()
 
@@ -239,15 +256,20 @@ exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 
 # Model training routine 
 print("\nTraining:-\n")
+
+
 def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     since = time.time()
 
     best_model_wts = copy.deepcopy(model.state_dict())
-    best_acc = 0.0
+    best_train_acc = 0.0
+    best_train_epoch = 0
+    best_val_epoch = 0
+    best_val_acc = 0.0
 
     # Tensorboard summary
     writer = SummaryWriter(log_dir=('./runs/' + model_name))
-    
+
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
@@ -257,7 +279,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
             if phase == 'train':
                 model.train()  # Set model to training mode
             else:
-                model.eval()   # Set model to evaluate mode
+                model.eval()  # Set model to evaluate mode
 
             running_loss = 0.0
             running_corrects = 0
@@ -299,26 +321,33 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
                 writer.add_scalar('Train/Loss', epoch_loss, epoch)
                 writer.add_scalar('Train/Accuracy', epoch_acc, epoch)
                 writer.flush()
+                if epoch_acc > best_train_acc:
+                    best_train_acc = epoch_acc
+                    best_train_epoch = epoch
             else:
                 writer.add_scalar('Valid/Loss', epoch_loss, epoch)
                 writer.add_scalar('Valid/Accuracy', epoch_acc, epoch)
                 writer.flush()
 
             # deep copy the model
-            if phase == 'valid' and epoch_acc > best_acc:
-                best_acc = epoch_acc
+            if phase == 'valid' and epoch_acc > best_val_acc:
+                best_val_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
-
+                best_val_epoch = epoch
         print()
 
     time_elapsed = time.time() - since
-    print('Training complete in {:.0f}m {:.0f}s'.format(
-        time_elapsed // 60, time_elapsed % 60))
-    print('Best val Acc: {:4f}'.format(best_acc))
+
+    with open('train_performance.csv', 'a+', newline='') as write_obj:
+        csv_writer = csv.writer(write_obj)
+        csv_writer.writerow([model_name, '{:.0f}m {:.0f}s'.format(
+            time_elapsed // 60, time_elapsed % 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy()),
+                             best_train_epoch, '{:4f}'.format(best_val_acc.cpu().numpy()), best_val_epoch])
 
     # load best model weights
     model.load_state_dict(best_model_wts)
     return model
+
 
 # Train the model
 model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
