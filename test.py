@@ -17,7 +17,7 @@ def parse_args():
                         help="choose a deep learning model")
     parser.add_argument('--IMDIR', type=str, required=False, default='./test',
                         help="dir for the testing image")
-    parser.add_argument('--IMDIR', type=str, required=False, default='./test',
+    parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="dir for the testing image")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
     args = parser.parse_args()
@@ -25,7 +25,6 @@ def parse_args():
 
 
 args = parse_args()
-
 
 # for reproducing
 torch.manual_seed(args.seeds)

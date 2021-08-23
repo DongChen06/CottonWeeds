@@ -5,10 +5,6 @@ import torch.optim as optim
 from torch.optim import lr_scheduler
 import torch.nn as nn
 import torch, os
-# for reproducing
-torch.manual_seed(66)
-torch.backends.cudnn.benchmark = False
-torch.backends.cudnn.deterministic = True
 
 import time, copy
 import multiprocessing
@@ -30,6 +26,8 @@ def parse_args():
     parser.add_argument('--train_mode', type=str, required=False, default='finetune',
                         help="Set training mode: finetune, transfer, scratch")
     parser.add_argument('--num_classes', type=int, required=False, default=15, help="Number of Classes")
+    parser.add_argument('--seeds', type=int, required=False, default=0,
+                        help="dir for the testing image")
     parser.add_argument('--epochs', type=int, required=False, default=50, help="Training Epochs")
     parser.add_argument('--batch_size', type=int, required=False, default=12, help="Training batch size")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
@@ -38,6 +36,11 @@ def parse_args():
 
 
 args = parse_args()
+# for reproducing
+torch.manual_seed(args.seeds)
+torch.backends.cudnn.benchmark = False
+torch.backends.cudnn.deterministic = True
+
 num_classes = args.num_classes
 model_name = args.model_name
 train_mode = args.train_mode
