@@ -48,7 +48,6 @@ if not os.path.isfile('eval_performance.csv'):
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
-
 # Load the model for evaluation
 model = torch.load(EVAL_MODEL)
 model.eval()
@@ -75,9 +74,9 @@ num_classes = len(eval_dataset.classes)
 dsize = len(eval_dataset)
 
 # Class label names
-class_names = ['Crabgrass', 'PricklySida', 'Sicklepod', 'Nutsedge', 'PalmerAmaranth', 'Eclipta',
-               'Morningglory', 'Waterhemp', 'SpottedSpurge', 'Purslane', 'Swinecress', 'Ragweed',
-               'Carpetweeds', 'SpurredAnoda', 'Goosegrass']
+class_names = ['Carpetweeds', 'Crabgrass', 'Eclipta', 'Goosegrass', 'Morningglory', 'Nutsedge',
+               'PalmerAmaranth', 'PricklySida', 'Purslane', 'Ragweed', 'Sicklepod',
+                'SpottedSpurge', 'SpurredAnoda', 'Swinecress', 'Waterhemp']
 
 # Initialize the prediction and label lists
 predlist = torch.zeros(0, dtype=torch.long, device='cpu')
@@ -107,7 +106,6 @@ conf_mat = confusion_matrix(lbllist.numpy(), predlist.numpy())
 print('Confusion Matrix')
 print('-' * 16)
 print(conf_mat, '\n')
-
 
 plt.figure(figsize=(10, 7))
 df_cm = pd.DataFrame(conf_mat, index=class_names,

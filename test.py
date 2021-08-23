@@ -6,11 +6,6 @@ import time
 import argparse
 import os, csv
 
-# for reproducing
-torch.manual_seed(66)
-torch.backends.cudnn.benchmark = False
-torch.backends.cudnn.deterministic = True
-
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Test CottonWeed Classifier')
@@ -22,12 +17,21 @@ def parse_args():
                         help="choose a deep learning model")
     parser.add_argument('--IMDIR', type=str, required=False, default='./test',
                         help="dir for the testing image")
+    parser.add_argument('--IMDIR', type=str, required=False, default='./test',
+                        help="dir for the testing image")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
     args = parser.parse_args()
     return args
 
 
 args = parse_args()
+
+
+# for reproducing
+torch.manual_seed(args.seeds)
+torch.backends.cudnn.benchmark = False
+torch.backends.cudnn.deterministic = True
+
 IMDIR = args.IMDIR
 model_name = args.model_name
 img_size = args.img_size
