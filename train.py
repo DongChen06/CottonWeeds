@@ -5,7 +5,6 @@ import torch.optim as optim
 from torch.optim import lr_scheduler
 import torch.nn as nn
 import torch, os
-
 import time, copy
 import multiprocessing
 from torchsummary import summary
@@ -17,17 +16,19 @@ import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train CottonWeed Classifier')
-    # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
-    # densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
-    # mobilenet_v3_small, mobilenet_v3_large, inceptionresnetv2, dpn68, mnasnet1_0, efficientnet-b0
-    # efficientnet-b1, efficientnet-b2, efficientnet-b3, efficientnet-b4, efficientnet-b5
+    parser.add_argument('--train_directory', type=str, required=False,
+                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/train',
+                        help="training directory")
+    parser.add_argument('--valid_directory', type=str, required=False,
+                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/val',
+                        help="validation directory")
     parser.add_argument('--model_name', type=str, required=False, default='alexnet',
                         help="choose a deep learning model")
     parser.add_argument('--train_mode', type=str, required=False, default='finetune',
                         help="Set training mode: finetune, transfer, scratch")
     parser.add_argument('--num_classes', type=int, required=False, default=15, help="Number of Classes")
     parser.add_argument('--seeds', type=int, required=False, default=0,
-                        help="dir for the testing image")
+                        help="random seed")
     parser.add_argument('--epochs', type=int, required=False, default=50, help="Training Epochs")
     parser.add_argument('--batch_size', type=int, required=False, default=12, help="Training batch size")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
@@ -47,19 +48,18 @@ train_mode = args.train_mode
 num_epochs = args.epochs
 bs = args.batch_size
 img_size = args.img_size
-# Set the train and validation directory paths
-train_directory = '/home/dong9/Downloads/DATA_0820/CottonWeedDataset/train'
-valid_directory = '/home/dong9/Downloads/DATA_0820/CottonWeedDataset/val'
+train_directory = args.train_directory
+valid_directory = args.valid_directory
 
 if not os.path.isfile('train_performance.csv'):
     with open('train_performance.csv', mode='w') as csv_file:
-        fieldnames = ['Model', 'Training Time', 'Trainable Parameters', 'Best Train Acc', 'Best Train Epoch',
+        fieldnames = ['Index', 'Model', 'Training Time', 'Trainable Parameters', 'Best Train Acc', 'Best Train Epoch',
                       'Best Val Acc', 'Best Val Epoch']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
 # Set the model save path
-PATH = model_name + ".pth"
+PATH = model_name + "_" + str(args.seeds) + ".pth"
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 
@@ -271,7 +271,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     best_val_acc = 0.0
 
     # Tensorboard summary
-    writer = SummaryWriter(log_dir=('./runs/' + model_name))
+    writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(args.seeds)))
 
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
@@ -343,7 +343,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
 
     with open('train_performance.csv', 'a+', newline='') as write_obj:
         csv_writer = csv.writer(write_obj)
-        csv_writer.writerow([model_name, '{:.0f}m {:.0f}s'.format(
+        csv_writer.writerow([args.seeds, model_name, '{:.0f}m {:.0f}s'.format(
             time_elapsed // 60, time_elapsed % 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy()),
                              best_train_epoch, '{:4f}'.format(best_val_acc.cpu().numpy()), best_val_epoch])
 

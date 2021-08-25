@@ -20,7 +20,7 @@ Deep Learning Models for cotton&weeds classification.
 - To train the models, just specify the name of the models, and then run `python train.py`.
 - To test the images,  just specify the name of the models, and then run `python test.py`.
 - To eval new data,  just specify the name of the models, and then run `python eval.py`.
-
+-To visualize the training, run `tensorboard --logdir=runs`
 
 ## Reference
 - [fine-tuning.pytorch](https://github.com/meliketoy/fine-tuning.pytorch#fine-tuningpytorch)
