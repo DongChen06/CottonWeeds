@@ -1,25 +1,26 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rcParams.update({'font.size': 18})
+
+plt.rcParams.update({'font.size': 12})
 
 
 # function to add value labels
-def addlabels(x,y):
+def addlabels(x, y):
     for i in range(len(x)):
-        plt.text(i, y[i], y[i], ha='center')
+        plt.text(i, y[i] + 5, y[i], ha='center')
 
 
-species = ['Carpetweed', 'Crabgrass', 'Goosegrass', 'Morningglory', 'Nutsedge', 'PalmerAmaranth',
-               'Purslane', 'Ragweed', 'Sicklepod', 'SpottedSpurge', 'SpurredAnoda', 'Swinecress']
+species = ['Morningglory', 'Carpetweed', 'Palmer Amaranth', 'Waterhemp', 'Purslane', 'Nutsedge', 'Eclipta',
+           'Spotted Spurge', 'Sicklepod', 'Goosegrass', 'Prickly Sida', 'Ragweed', 'Crabgrass', 'Swinecress', 'Spurred Anoda']
 
-N = 12
+N = 15
 
-train = (524, 35, 126, 385, 156, 388, 56, 90, 100, 52, 41, 49)
-val = (151, 10, 37, 111, 45, 112, 16, 26, 29, 15, 13, 15)
-bottom = (675,  45, 163, 496, 201, 500,  72, 116, 129,  67,  54,  64)
-test = (76, 5, 19, 56, 23, 56, 8, 13, 15, 8, 7, 8)
-nums = [751, 50, 182, 552, 224, 556, 80, 129, 144, 75, 61, 72]
+nums = (1115, 763, 689, 451, 450, 273, 254, 234, 240, 216, 129, 129, 111, 72, 61)
+train = (724, 495, 447, 292, 292, 177, 164, 151, 156, 139, 83, 83, 71, 46, 38)
+val = (223, 153, 138, 91, 90, 55, 51, 47, 48, 44, 26, 26, 23, 15, 13)
+bottom = (947, 648, 585, 383, 382, 232, 213, 195, 204, 183, 109, 109, 94, 61, 51)
+test = (168, 115, 104, 68, 68, 41, 39, 36, 36, 33, 20, 20, 17, 11, 10)
+
 ind = np.arange(N)
 width = 0.45
 
@@ -28,9 +29,9 @@ p1 = plt.bar(ind, train, width)
 p2 = plt.bar(ind, val, width, bottom=train)
 p3 = plt.bar(ind, test, width, bottom=bottom)
 
-plt.ylabel("number of Species", fontsize=20)
-plt.xticks(ind, ('Carpetweed', 'Crabgrass', 'Goosegrass', 'Morningglory', 'Nutsedge', 'PalmerAmaranth',
-               'Purslane', 'Ragweed', 'Sicklepod', 'SpottedSpurge', 'SpurredAnoda', 'Swinecress'))
+plt.ylabel("Number of Species", fontsize=16)
+plt.xticks(ind, ('Morningglory', 'Carpetweed', 'Palmer Amaranth', 'Waterhemp', 'Purslane', 'Nutsedge', 'Eclipta',
+           'Spotted Spurge', 'Sicklepod', 'Goosegrass', 'Prickly Sida', 'Ragweed', 'Crabgrass', 'Swinecress', 'Spurred Anoda'))
 # plt.yticks(np.arange(0, 81, 10))
 plt.legend(('train', 'val', 'test'), fontsize=18)
 plt.xticks(rotation=60, fontsize=16)
