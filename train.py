@@ -1,15 +1,3 @@
-from torchvision import datasets, models, transforms
-import torch.utils.data as data
-from torch.utils.tensorboard import SummaryWriter
-import torch.optim as optim
-from torch.optim import lr_scheduler
-import torch.nn as nn
-import torch, os
-import time, copy
-import multiprocessing
-from torchsummary import summary
-import pretrainedmodels  # for inception-v4 and xception
-from efficientnet_pytorch import EfficientNet
 import csv
 import argparse
 
@@ -17,10 +5,10 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser(description='Train CottonWeed Classifier')
     parser.add_argument('--train_directory', type=str, required=False,
-                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/train',
+                        default='/home/orange/Downloads/CottonWeedDataset/train',
                         help="training directory")
     parser.add_argument('--valid_directory', type=str, required=False,
-                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/val',
+                        default='/home/orange/Downloads/CottonWeedDataset/val',
                         help="validation directory")
     parser.add_argument('--model_name', type=str, required=False, default='alexnet',
                         help="choose a deep learning model")
@@ -29,7 +17,7 @@ def parse_args():
     parser.add_argument('--num_classes', type=int, required=False, default=15, help="Number of Classes")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="random seed")
-    parser.add_argument('--epochs', type=int, required=False, default=50, help="Training Epochs")
+    parser.add_argument('--epochs', type=int, required=False, default=10, help="Training Epochs")
     parser.add_argument('--batch_size', type=int, required=False, default=12, help="Training batch size")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
     args = parser.parse_args()
@@ -37,10 +25,43 @@ def parse_args():
 
 
 args = parse_args()
+import torch, os
+import random
+import numpy as np
+
 # for reproducing
 torch.manual_seed(args.seeds)
+torch.cuda.manual_seed(args.seeds)
+torch.cuda.manual_seed_all(args.seeds) # if you are using multi-GPU.
 torch.backends.cudnn.benchmark = False
 torch.backends.cudnn.deterministic = True
+os.environ['PYTHONHASHSEED'] = str(args.seeds)
+random.seed(args.seeds)
+np.random.seed(args.seeds)
+
+
+def seed_worker(worker_id):
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
+
+
+g = torch.Generator()
+g.manual_seed(args.seeds)
+
+
+from torchvision import datasets, models, transforms
+import torch.utils.data as data
+from torch.utils.tensorboard import SummaryWriter
+import torch.optim as optim
+from torch.optim import lr_scheduler
+import torch.nn as nn
+from torchsummary import summary
+import time, copy
+import multiprocessing
+import pretrainedmodels  # for inception-v4 and xception
+from efficientnet_pytorch import EfficientNet
+
 
 num_classes = args.num_classes
 model_name = args.model_name
@@ -96,9 +117,11 @@ dataset_sizes = {
 # Create iterators for data loading
 dataloaders = {
     'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
-                             num_workers=num_cpu, pin_memory=True, drop_last=True),
+                             num_workers=num_cpu, pin_memory=True, drop_last=True,
+                             worker_init_fn=seed_worker, generator = g),
     'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
-                             num_workers=num_cpu, pin_memory=True, drop_last=True)}
+                             num_workers=num_cpu, pin_memory=True, drop_last=True,
+                             worker_init_fn=seed_worker, generator=g)}
 
 # Class names or target labels
 class_names = dataset['train'].classes
