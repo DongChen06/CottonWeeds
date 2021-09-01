@@ -4,14 +4,10 @@ import os, csv
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Test CottonWeed Classifier')
-    # Load a pretrained model - resnet18, resnet50, resnet101, alexnet, squeezenet, vgg11, vgg16, vgg19,
-    # densenet121, densenet169,  densenet161, inception, inceptionv4, googlenet, xception, mobilenet_v2,
-    # mobilenet_v3_small, mobilenet_v3_large, inceptionresnetv2, dpn68, mnasnet1_0, efficientnet-b0
-    # efficientnet-b1, efficientnet-b2, efficientnet-b3, efficientnet-b4, efficientnet-b5
     parser.add_argument('--model_name', type=str, required=False, default='alexnet',
                         help="choose a deep learning model")
     parser.add_argument('--EVAL_DIR', type=str, required=False,
-                        default='/home/orange/Downloads/CottonWeedDataset/test',
+                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/test',
                         help="dir for the testing image")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="random seed")
@@ -120,15 +116,23 @@ print('Confusion Matrix')
 print('-' * 16)
 print(conf_mat, '\n')
 
-plt.figure(figsize=(10, 7))
+if not os.path.exists('Confusing_Matrices/plots/'):
+    os.mkdir('Confusing_Matrices/plots/')
+if not os.path.exists('Confusing_Matrices/csv/'):
+    os.mkdir('Confusing_Matrices/csv/')
+
+
+plt.figure(figsize=(10, 6))
 df_cm = pd.DataFrame(conf_mat, index=class_names,
                      columns=class_names)
-sn.set(font_scale=1.2)
-sn.heatmap(df_cm, annot=True, annot_kws={"size": 16})
+sn.set(font_scale=1.0)
+sn.heatmap(df_cm, annot=True, annot_kws={"size": 12}, cmap='Greens',  fmt='d')
+plt.xticks(rotation=75, fontsize=14)
 plt.tight_layout()
-plt.xticks(rotation=60, fontsize=16)
-plt.savefig('Confusing_Matrices/' + model_name + '_cm.png')
+plt.savefig('Confusing_Matrices/plots/' + model_name + '_cm_' + str(args.seeds) + '.png')
 # plt.show()
+
+df_cm.to_csv('Confusing_Matrices/csv/' + model_name + '_cm_' + str(args.seeds) + '.csv')
 
 # Per-class accuracy
 class_accuracy = 100 * conf_mat.diagonal() / conf_mat.sum(1)
