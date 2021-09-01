@@ -1,3 +1,5 @@
 efficientnet_pytorch
 pretrainedmodels
 torchsummary
+scikit-learn
+seaborn

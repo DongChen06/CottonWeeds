@@ -1,21 +1,5 @@
-import numpy as np
-import torch
-import torchvision
-from torchvision import datasets, models, transforms
-import torch.utils.data as data
-import multiprocessing
-from sklearn.metrics import confusion_matrix
-import seaborn as sn
-import pandas as pd
-import matplotlib.pyplot as plt
-
 import argparse
 import os, csv
-
-# for reproducing
-torch.manual_seed(66)
-torch.backends.cudnn.benchmark = False
-torch.backends.cudnn.deterministic = True
 
 
 def parse_args():
@@ -27,18 +11,47 @@ def parse_args():
     parser.add_argument('--model_name', type=str, required=False, default='alexnet',
                         help="choose a deep learning model")
     parser.add_argument('--EVAL_DIR', type=str, required=False,
-                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/test',
+                        default='/home/orange/Downloads/CottonWeedDataset/test',
                         help="dir for the testing image")
+    parser.add_argument('--seeds', type=int, required=False, default=0,
+                        help="random seed")
     parser.add_argument('--batch_size', type=int, required=False, default=8, help="Training batch size")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
+    parser.add_argument('--use_weighting', type=bool, required=False, default=False, help="use weighted cross entropy or not")
     args = parser.parse_args()
     return args
 
 
 args = parse_args()
+
+import numpy as np
+import torch
+import random
+from torchvision import datasets, transforms
+import torch.utils.data as data
+import multiprocessing
+from sklearn.metrics import confusion_matrix
+import seaborn as sn
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# for reproducing
+torch.manual_seed(args.seeds)
+torch.cuda.manual_seed(args.seeds)
+torch.cuda.manual_seed_all(args.seeds) # if you are using multi-GPU.
+torch.backends.cudnn.benchmark = False
+torch.backends.cudnn.deterministic = True
+os.environ['PYTHONHASHSEED'] = str(args.seeds)
+random.seed(args.seeds)
+np.random.seed(args.seeds)
+
+
 EVAL_DIR = args.EVAL_DIR
 model_name = args.model_name
-EVAL_MODEL = './models/' + model_name + ".pth"
+if args.use_weighting:
+    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
+else:
+    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
 img_size = args.img_size
 bs = args.batch_size
 

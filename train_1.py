@@ -1,3 +1,4 @@
+"""no random rotation"""
 import csv
 import argparse
 
@@ -20,6 +21,7 @@ def parse_args():
     parser.add_argument('--epochs', type=int, required=False, default=50, help="Training Epochs")
     parser.add_argument('--batch_size', type=int, required=False, default=12, help="Training batch size")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
+    parser.add_argument('--use_weighting', type=bool, required=False, default=False, help="use weighted cross entropy or not")
     args = parser.parse_args()
     return args
 
@@ -80,7 +82,11 @@ if not os.path.isfile('train_performance.csv'):
         writer.writeheader()
 
 # Set the model save path
-PATH = model_name + "_" + str(args.seeds) + ".pth"
+if args.use_weighting:
+    print(True)
+    PATH = model_name + "_" + str(args.seeds) + "_w" + ".pth"
+else:
+    PATH = model_name + "_" + str(args.seeds) + ".pth"
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 
@@ -89,7 +95,6 @@ image_transforms = {
     'train': transforms.Compose([
         transforms.RandomResizedCrop(size=img_size),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomRotation(degrees=(-180, 180)),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406],
                              [0.229, 0.224, 0.225])
@@ -134,6 +139,7 @@ print("Training-set size:", dataset_sizes['train'],
 
 print("\nLoading pretrained-model for finetuning ...\n")
 model_ft = None
+
 
 if model_name == 'resnet18':
     # Modify fc layers to match num_classes
@@ -270,10 +276,19 @@ else:
     summary(model_ft, input_size=(3, img_size, img_size))
 print(model_ft)
 
+# for class unbalance
+if args.use_weighting:
+    weights = np.array([762, 111, 254, 216, 1115, 273, 689, 129, 450, 129, 240, 234, 61, 72, 451])
+    weights = np.max(weights) / weights
+    class_weight = torch.FloatTensor(list(weights)).to(device)
+else:
+    weights = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+    class_weight = torch.FloatTensor(list(weights)).to(device)
+
 pytorch_total_params = sum(p.numel() for p in model_ft.parameters() if p.requires_grad)
 # print("Total parameters:", pytorch_total_params)
 # Loss function
-criterion = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss(weight=class_weight)
 
 # Optimizer 
 optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
@@ -294,8 +309,11 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     best_val_epoch = 0
     best_val_acc = 0.0
 
-    # Tensorboard summary
-    writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(args.seeds)))
+    if args.use_weighting:
+        # Tensorboard summary
+        writer = SummaryWriter(log_dir=('./runs/' + model_name + '_w' + '/' + str(args.seeds)))
+    else:
+        writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(args.seeds)))
 
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
@@ -367,8 +385,8 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
 
     with open('train_performance.csv', 'a+', newline='') as write_obj:
         csv_writer = csv.writer(write_obj)
-        csv_writer.writerow([args.seeds, model_name, '{:.0f}m {:.0f}s'.format(
-            time_elapsed // 60, time_elapsed % 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy()),
+        csv_writer.writerow([args.seeds, model_name, '{:.0f}m'.format(
+            time_elapsed // 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy()),
                              best_train_epoch, '{:4f}'.format(best_val_acc.cpu().numpy()), best_val_epoch])
 
     # load best model weights
