@@ -39,7 +39,7 @@ IMDIR = args.IMDIR
 model_name = args.model_name
 img_size = args.img_size
 since = time.time()
-MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
+MODEL = './models-08-20/' + model_name + '_' + str(args.seeds) + ".pth"
 
 if not os.path.isfile('test_performance512.csv'):
     with open('test_performance512.csv', mode='w') as csv_file:

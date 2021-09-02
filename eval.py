@@ -45,9 +45,9 @@ np.random.seed(args.seeds)
 EVAL_DIR = args.EVAL_DIR
 model_name = args.model_name
 if args.use_weighting:
-    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
+    EVAL_MODEL = './models-08-20/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
 else:
-    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
+    EVAL_MODEL = './models-08-20/' + model_name + '_' + str(args.seeds) + ".pth"
 img_size = args.img_size
 bs = args.batch_size
 
