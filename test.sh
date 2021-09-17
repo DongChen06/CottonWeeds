@@ -174,16 +174,14 @@ cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b3 --seeds 3
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b3 --seeds 4
 
-
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b4 --seeds 0
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b4 --seeds 1
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b4 --seeds 2
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b4 --seeds 3
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b4 --seeds 4
 
-
-#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 0
-#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 1
-#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 2
-#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 3
-#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 4
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 0
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 2
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 3
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python test.py --model_name efficientnet-b5 --seeds 4

@@ -11,7 +11,7 @@ def parse_args():
                         help="dir for the testing image")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="dir for the testing image")
-    parser.add_argument('--img_size', type=int, required=False, default=224, help="Image Size")
+    parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
     args = parser.parse_args()
     return args
 
@@ -39,10 +39,10 @@ IMDIR = args.IMDIR
 model_name = args.model_name
 img_size = args.img_size
 since = time.time()
-MODEL = './models-08-20/' + model_name + '_' + str(args.seeds) + ".pth"
+MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
 
-if not os.path.isfile('test_performance512.csv'):
-    with open('test_performance512.csv', mode='w') as csv_file:
+if not os.path.isfile('test_performance.csv'):
+    with open('test_performance.csv', mode='w') as csv_file:
         fieldnames = ['Index', 'Model', 'Testing Time (s)']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -51,7 +51,7 @@ if not os.path.isfile('test_performance512.csv'):
 model = torch.load(MODEL)
 model.eval()
 
-# Retreive 9 random images from directory
+# Retrieve 15 random images from directory
 files = Path(IMDIR).resolve().glob('*.*')
 images = list(files)
 
@@ -79,6 +79,6 @@ time_elapsed = time.time() - since
 # print('Testing time per image in {}s'.format(
 #     time_elapsed / len(images)))
 
-with open('test_performance512.csv', 'a+', newline='') as write_obj:
+with open('test_performance.csv', 'a+', newline='') as write_obj:
     csv_writer = csv.writer(write_obj)
     csv_writer.writerow([args.seeds, model_name, '{}'.format(time_elapsed / len(images))])

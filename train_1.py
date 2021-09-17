@@ -88,7 +88,7 @@ if args.use_weighting:
 else:
     PATH = model_name + "_" + str(args.seeds) + ".pth"
 # Number of workers
-num_cpu = 4  # multiprocessing.cpu_count()
+num_cpu = 32  # multiprocessing.cpu_count()
 
 # Applying transforms to the data
 image_transforms = {
@@ -281,8 +281,8 @@ if args.use_weighting:
     # weights = np.array([762, 111, 254, 216, 1115, 273, 689, 129, 450, 129, 240, 234, 61, 72, 451])
     # weights = np.max(weights) / weights
     # class_weight = torch.FloatTensor(list(weights)).to(device)
-    weights = [1.75596, 10.045, 4.3898, 6.1944, 1.2, 4.90104, 1.94196, 8.6434, 2.97336, 10.37208, 4.6458, 4.765, 18.2787, 15.4861, 2.96676]  # 1.2 times
-    # weights = [2.04862, 10.045, 4.3898, 7.2268, 1.4, 5.71788, 2.26562, 8.6434, 3.46892, 12.10076, 4.6458, 4.765, 18.2787,	15.4861, 3.46122]
+    # weights = [1.75596, 10.045, 4.3898, 6.1944, 1.2, 4.90104, 1.94196, 8.6434, 2.97336, 10.37208, 4.6458, 4.765, 18.2787, 15.4861, 2.96676]  # 1.2 times
+    weights = [2.04862, 10.045, 4.3898, 7.2268, 1.4, 5.71788, 2.26562, 8.6434, 3.46892, 12.10076, 4.6458, 4.765, 18.2787,	15.4861, 3.46122]  # 1.4 times
     class_weight = torch.FloatTensor(weights).to(device)
 else:
     weights = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
@@ -314,9 +314,9 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
 
     if args.use_weighting:
         # Tensorboard summary
-        writer = SummaryWriter(log_dir=('./runs-08-20/' + model_name + '_w' + '/' + str(args.seeds)))
+        writer = SummaryWriter(log_dir=('./runs/' + model_name + '_w' + '/' + str(args.seeds)))
     else:
-        writer = SummaryWriter(log_dir=('./runs-08-20/' + model_name + '/' + str(args.seeds)))
+        writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(args.seeds)))
 
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))

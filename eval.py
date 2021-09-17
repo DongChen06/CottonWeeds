@@ -45,9 +45,9 @@ np.random.seed(args.seeds)
 EVAL_DIR = args.EVAL_DIR
 model_name = args.model_name
 if args.use_weighting:
-    EVAL_MODEL = './models-08-20/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
+    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
 else:
-    EVAL_MODEL = './models-08-20/' + model_name + '_' + str(args.seeds) + ".pth"
+    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
 img_size = args.img_size
 bs = args.batch_size
 
@@ -123,16 +123,22 @@ if not os.path.exists('Confusing_Matrices/csv/'):
 
 
 plt.figure(figsize=(10, 6))
-df_cm = pd.DataFrame(conf_mat, index=class_names,
+df_cm = pd.DataFrame(conf_mat / conf_mat.sum(1), index=class_names,
                      columns=class_names)
 sn.set(font_scale=1.0)
-sn.heatmap(df_cm, annot=True, annot_kws={"size": 12}, cmap='Greens',  fmt='d')
+sn.heatmap(df_cm, annot=True, annot_kws={"size": 12}, cmap='Greens',  fmt='0.3f')
 plt.xticks(rotation=75, fontsize=14)
 plt.tight_layout()
-plt.savefig('Confusing_Matrices/plots/' + model_name + '_cm_' + str(args.seeds) + '.png')
+if args.use_weighting:
+    plt.savefig('Confusing_Matrices/plots/' + model_name + '_cm_' + str(args.seeds) + '_w.png')
+else:
+    plt.savefig('Confusing_Matrices/plots/' + model_name + '_cm_' + str(args.seeds) + '.png')
 # plt.show()
 
-df_cm.to_csv('Confusing_Matrices/csv/' + model_name + '_cm_' + str(args.seeds) + '.csv')
+if args.use_weighting:
+    df_cm.to_csv('Confusing_Matrices/csv/' + model_name + '_cm_' + str(args.seeds) + '_w.csv')
+else:
+    df_cm.to_csv('Confusing_Matrices/csv/' + model_name + '_cm_' + str(args.seeds) + '.csv')
 
 # Per-class accuracy
 class_accuracy = 100 * conf_mat.diagonal() / conf_mat.sum(1)

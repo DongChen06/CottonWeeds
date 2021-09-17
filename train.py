@@ -295,7 +295,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     best_val_acc = 0.0
 
     # Tensorboard summary
-    writer = SummaryWriter(log_dir=('./runs-08-20/' + model_name + '/' + str(args.seeds)))
+    writer = SummaryWriter(log_dir=('./runs-09-02-08-20/' + model_name + '/' + str(args.seeds)))
 
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
