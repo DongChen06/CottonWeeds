@@ -2,9 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib
+from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+plt.rcParams["font.family"] = "Times New Roman"
 
 
-def smooth(x, timestamps=2):
+def smooth(x, timestamps=3):
     n = len(x)
     y = np.zeros(n)
     for i in range(n):
@@ -15,17 +18,17 @@ def smooth(x, timestamps=2):
 
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
-color_cycle = sns.color_palette()
+color_cycle = sns.color_palette("husl", 10)
 sns.set_color_codes()
 
-colors = [0, 5, 2, 6, 1, 3]
+colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 alpha = 0.3
 legend_size = 12
 line_size_others = 1.5
 line_size_ours = 1.5
 tick_size = 12
-label_size = 14
+label_size = 12
 
 
 def cal_collision_rate(l):
@@ -37,138 +40,65 @@ def cal_collision_rate(l):
 
 
 X = np.arange(50)
-"""alexnet"""
-alexnet_0 = np.genfromtxt('../acc_csv/run-alexnet_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-alexnet_1 = np.genfromtxt('../acc_csv/run-alexnet_1-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-alexnet_2 = np.genfromtxt('../acc_csv/run-alexnet_2-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-alexnet_3 = np.genfromtxt('../acc_csv/run-alexnet_3-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-alexnet_4 = np.genfromtxt('../acc_csv/run-alexnet_4-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+alexnet = np.genfromtxt('plots/acc_csv/run-alexnet_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+squeezenet = np.genfromtxt('plots/acc_csv/run-squeezenet_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+googlenet = np.genfromtxt('plots/acc_csv/run-googlenet_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+xception = np.genfromtxt('plots/acc_csv/run-xception_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+dpn68 = np.genfromtxt('plots/acc_csv/run-dpn68_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+densenet121 = np.genfromtxt('plots/acc_csv/run-densenet121_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+densenet161 = np.genfromtxt('plots/acc_csv/run-densenet161_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+resnet101 = np.genfromtxt('plots/acc_csv/run-resnet101_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+densenet169 = np.genfromtxt('plots/acc_csv/run-densenet169_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+resnet50 = np.genfromtxt('plots/acc_csv/run-resnet50_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+resnet18 = np.genfromtxt('plots/acc_csv/run-resnet18_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+vgg11 = np.genfromtxt('plots/acc_csv/run-vgg11_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+vgg16 = np.genfromtxt('plots/acc_csv/run-vgg16_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+vgg19 = np.genfromtxt('plots/acc_csv/run-vgg19_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+inception = np.genfromtxt('plots/acc_csv/run-inception_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+inceptionv4 = np.genfromtxt('plots/acc_csv/run-inceptionv4_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+inceptionresnetv2 = np.genfromtxt('plots/acc_csv/run-inceptionresnetv2_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+mobilenet_v2 = np.genfromtxt('plots/acc_csv/run-mobilenet_v2_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+mobilenet_v3_small = np.genfromtxt('plots/acc_csv/run-mobilenet_v3_small_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+mobilenet_v3_large = np.genfromtxt('plots/acc_csv/run-mobilenet_v3_large_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
 
+mnasnet1_0 = np.genfromtxt('plots/acc_csv/run-mnasnet1_0_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+efficientnet_b0 = np.genfromtxt('plots/acc_csv/run-efficientnet-b0_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+efficientnet_b1 = np.genfromtxt('plots/acc_csv/run-efficientnet-b1_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+efficientnet_b2 = np.genfromtxt('plots/acc_csv/run-efficientnet-b2_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+efficientnet_b3 = np.genfromtxt('plots/acc_csv/run-efficientnet-b3_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+efficientnet_b4 = np.genfromtxt('plots/acc_csv/run-efficientnet-b4_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
+efficientnet_b5 = np.genfromtxt('plots/acc_csv/run-efficientnet-b5_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
 
-alexnet = np.vstack((smooth(alexnet_0), smooth(alexnet_1), smooth(alexnet_2), smooth(alexnet_3), smooth(alexnet_4)))
-
-alexnet_mean = np.mean(alexnet, axis=0)
-alexnet_std = np.std(alexnet, axis=0)
-alexnet_lower_bound = alexnet_mean - alexnet_std
-alexnet_upper_bound = alexnet_mean + alexnet_std
-
-
-"""googlenet"""
-googlenet_0 = np.genfromtxt('../acc_csv/run-googlenet_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-googlenet_1 = np.genfromtxt('../acc_csv/run-googlenet_1-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-googlenet_2 = np.genfromtxt('../acc_csv/run-googlenet_2-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-googlenet_3 = np.genfromtxt('../acc_csv/run-googlenet_3-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-googlenet_4 = np.genfromtxt('../acc_csv/run-googlenet_4-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-
-
-googlenet = np.vstack((smooth(googlenet_0), smooth(googlenet_1), smooth(googlenet_2), smooth(googlenet_3), smooth(googlenet_4)))
-
-googlenet_mean = np.mean(googlenet, axis=0)
-googlenet_std = np.std(googlenet, axis=0)
-googlenet_lower_bound = googlenet_mean - googlenet_std
-googlenet_upper_bound = googlenet_mean + googlenet_std
-
-
-"""resnet18"""
-resnet18_0 = np.genfromtxt('../acc_csv/run-resnet18_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet18_1 = np.genfromtxt('../acc_csv/run-resnet18_1-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet18_2 = np.genfromtxt('../acc_csv/run-resnet18_2-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet18_3 = np.genfromtxt('../acc_csv/run-resnet18_3-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet18_4 = np.genfromtxt('../acc_csv/run-resnet18_4-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-
-
-resnet18 = np.vstack((smooth(resnet18_0), smooth(resnet18_1), smooth(resnet18_2), smooth(resnet18_3), smooth(resnet18_4)))
-
-resnet18_mean = np.mean(resnet18, axis=0)
-resnet18_std = np.std(resnet18, axis=0)
-resnet18_lower_bound = resnet18_mean - resnet18_std
-resnet18_upper_bound = resnet18_mean + resnet18_std
-
-
-"""resnet50"""
-resnet50_0 = np.genfromtxt('../acc_csv/run-resnet50_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet50_1 = np.genfromtxt('../acc_csv/run-resnet50_1-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet50_2 = np.genfromtxt('../acc_csv/run-resnet50_2-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet50_3 = np.genfromtxt('../acc_csv/run-resnet50_3-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet50_4 = np.genfromtxt('../acc_csv/run-resnet50_4-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-
-resnet50 = np.vstack((smooth(resnet50_0), smooth(resnet50_1), smooth(resnet50_2), smooth(resnet50_3), smooth(resnet50_4)))
-
-resnet50_mean = np.mean(resnet50, axis=0)
-resnet50_std = np.std(resnet50, axis=0)
-resnet50_lower_bound = resnet50_mean - resnet50_std
-resnet50_upper_bound = resnet50_mean + resnet50_std
-
-
-"""resnet101"""
-resnet101_0 = np.genfromtxt('../acc_csv/run-resnet101_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet101_1 = np.genfromtxt('../acc_csv/run-resnet101_1-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet101_2 = np.genfromtxt('../acc_csv/run-resnet101_2-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet101_3 = np.genfromtxt('../acc_csv/run-resnet101_3-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-resnet101_4 = np.genfromtxt('../acc_csv/run-resnet101_4-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-
-resnet101 = np.vstack((smooth(resnet101_0), smooth(resnet101_1), smooth(resnet101_2), smooth(resnet101_3), smooth(resnet101_4)))
-
-resnet101_mean = np.mean(resnet101, axis=0)
-resnet101_std = np.std(resnet101, axis=0)
-resnet101_lower_bound = resnet101_mean - resnet101_std
-resnet101_upper_bound = resnet101_mean + resnet101_std
-
-
-"""squeezenet"""
-squeezenet_0 = np.genfromtxt('../acc_csv/run-squeezenet_0-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-squeezenet_1 = np.genfromtxt('../acc_csv/run-squeezenet_1-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-squeezenet_2 = np.genfromtxt('../acc_csv/run-squeezenet_2-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-squeezenet_3 = np.genfromtxt('../acc_csv/run-squeezenet_3-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-squeezenet_4 = np.genfromtxt('../acc_csv/run-squeezenet_4-tag-Train_Accuracy.csv', dtype=None, delimiter=',', names=True)['Value']
-
-squeezenet = np.vstack((smooth(squeezenet_0), smooth(squeezenet_1), smooth(squeezenet_2), smooth(squeezenet_3), smooth(squeezenet_4)))
-
-squeezenet_mean = np.mean(squeezenet, axis=0)
-squeezenet_std = np.std(squeezenet, axis=0)
-squeezenet_lower_bound = squeezenet_mean - squeezenet_std
-squeezenet_upper_bound = squeezenet_mean + squeezenet_std
+Y = np.array([smooth(dpn68), smooth(densenet161), smooth(resnet101), smooth(densenet169), smooth(resnet50),
+                smooth(vgg19), smooth(densenet121), smooth(vgg16), smooth(mnasnet1_0),
+              smooth(alexnet), smooth(squeezenet), smooth(googlenet), smooth(xception), smooth(dpn68),  smooth(resnet18), smooth(vgg11),
+             smooth(inception), smooth(inceptionv4), smooth(inceptionresnetv2),
+            smooth(mobilenet_v2), smooth(mobilenet_v3_small), smooth(mobilenet_v3_large), smooth(efficientnet_b3), smooth(efficientnet_b4),
+              smooth(efficientnet_b0), smooth(efficientnet_b1), smooth(efficientnet_b2), smooth(efficientnet_b5)])
 
 ######################################
-fig, ax = plt.subplots(figsize=(5, 4))
-
-ax.plot(X, alexnet_mean, lw=line_size_others, label='AlexNet', color=color_cycle[colors[0]])
-ax.fill_between(X, alexnet_lower_bound, alexnet_upper_bound, facecolor=color_cycle[colors[0]],
-                 edgecolor='none', alpha=alpha)
-
-ax.plot(X, googlenet_mean, lw=line_size_others, label='GoogleNet', color=color_cycle[colors[1]])
-ax.fill_between(X, googlenet_lower_bound, googlenet_upper_bound, facecolor=color_cycle[colors[1]],
-                 edgecolor='none', alpha=alpha)
-
-ax.plot(X, squeezenet_mean, lw=line_size_others, label='SqueezeNet', color=color_cycle[colors[2]])
-ax.fill_between(X, squeezenet_lower_bound, squeezenet_upper_bound, facecolor=color_cycle[colors[2]],
-                 edgecolor='none', alpha=alpha)
-
-ax.plot(X, resnet18_mean, lw=line_size_others, label='ResNet18', color=color_cycle[colors[3]])
-ax.fill_between(X, resnet18_lower_bound, resnet18_upper_bound, facecolor=color_cycle[colors[3]],
-                 edgecolor='none', alpha=alpha)
-
-ax.plot(X, resnet50_mean, lw=line_size_others, label='ResNet50', color=color_cycle[colors[4]])
-ax.fill_between(X, resnet50_lower_bound, resnet50_upper_bound, facecolor=color_cycle[colors[4]],
-                 edgecolor='none', alpha=alpha)
-
-ax.plot(X, resnet101_mean, lw=line_size_ours, label='ResNet101',  color=color_cycle[colors[-1]])
-ax.fill_between(X, resnet101_lower_bound, resnet101_upper_bound, facecolor=color_cycle[colors[-1]],
-                 edgecolor='none', alpha=alpha)
-leg2 = ax.legend(fontsize=legend_size, loc='lower right', ncol=2)
-
+fig, ax = plt.subplots(figsize=(5.5, 4))
+ax.plot(X, Y.T, lw=line_size_others)
 ax.set_xlim(1, 50)
-ax.set_ylim(0.6, 1)
+ax.set_ylim(0.65, 1)
 ax.tick_params(axis='x', labelsize=tick_size)
 ax.tick_params(axis='y', labelsize=tick_size)
 ax.set_xlabel('Training epochs', fontsize=label_size)
 ax.set_ylabel('F1-score', fontsize=label_size)
 ax.ticklabel_format(axis="x")
-
 ax.grid()
-# set the linewidth of each legend object
-for legobj in leg2.legendHandles:
-    legobj.set_linewidth(2.0)
 
+axins2 = zoomed_inset_axes(ax, zoom=6, loc=7)
+axins2.plot(X, Y.T)
+# SPECIFY THE LIMITS
+x1, x2, y1, y2 = 46, 49.2, 0.97, 0.984
+axins2.set_xlim(x1, x2)
+axins2.set_ylim(y1, y2)
+axins2.axes.xaxis.set_visible(False)
+# axins2.axes.yaxis.set_visible(False)
+mark_inset(ax, axins2, loc1=2, loc2=4, fc="None", lw=1.5, ec="k")
+
+ax.legend(['DPN68', 'DenseNet161', 'ResNet101', 'DenseNet169', 'ResNet50', 'VGG19', 'DenseNet121', 'VGG16'], ncol=2)
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig('train_acc.pdf')
