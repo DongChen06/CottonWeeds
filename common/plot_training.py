@@ -24,11 +24,11 @@ sns.set_color_codes()
 colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 alpha = 0.3
-legend_size = 12
+legend_size = 15
 line_size_others = 1.5
 line_size_ours = 1.5
-tick_size = 12
-label_size = 12
+tick_size = 18
+label_size = 18
 
 
 def cal_collision_rate(l):
@@ -77,28 +77,31 @@ Y = np.array([smooth(dpn68), smooth(densenet161), smooth(resnet101), smooth(dens
               smooth(efficientnet_b0), smooth(efficientnet_b1), smooth(efficientnet_b2), smooth(efficientnet_b5)])
 
 ######################################
-fig, ax = plt.subplots(figsize=(5.5, 4))
-ax.plot(X, Y.T, lw=line_size_others)
+fig, ax = plt.subplots(figsize=(8, 6))
+ax.plot(X, Y.T * 100, lw=line_size_others)
 ax.set_xlim(1, 50)
-ax.set_ylim(0.65, 1)
+ax.set_ylim(65, 100)
 ax.tick_params(axis='x', labelsize=tick_size)
 ax.tick_params(axis='y', labelsize=tick_size)
-ax.set_xlabel('Training epochs', fontsize=label_size)
-ax.set_ylabel('F1-score', fontsize=label_size)
+ax.set_xlabel('Training epochs', fontsize=20)
+ax.set_ylabel('F1-score  (%)', fontsize=20)
 ax.ticklabel_format(axis="x")
 ax.grid()
 
 axins2 = zoomed_inset_axes(ax, zoom=6, loc=7)
-axins2.plot(X, Y.T)
+axins2.plot(X, Y.T*100)
 # SPECIFY THE LIMITS
-x1, x2, y1, y2 = 46, 49.2, 0.97, 0.984
+x1, x2, y1, y2 = 46, 49.2, 96.5, 98.4
 axins2.set_xlim(x1, x2)
 axins2.set_ylim(y1, y2)
 axins2.axes.xaxis.set_visible(False)
 # axins2.axes.yaxis.set_visible(False)
+axins2.tick_params(axis='y', labelsize=tick_size)
 mark_inset(ax, axins2, loc1=2, loc2=4, fc="None", lw=1.5, ec="k")
 
-ax.legend(['DPN68', 'DenseNet161', 'ResNet101', 'DenseNet169', 'ResNet50', 'VGG19', 'DenseNet121', 'VGG16'], ncol=2)
+ax.legend(['DPN68', 'DenseNet161', 'ResNet101', 'DenseNet169', 'ResNet50', 'VGG19', 'DenseNet121', 'VGG16', 'MobileNetv2', 'VGG11'],
+          ncol=3, fontsize=legend_size)
 plt.tight_layout()
-# plt.show()
 plt.savefig('train_acc.pdf')
+plt.show()
+

@@ -3,6 +3,8 @@
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+# plt.rcParams["font.family"] = "Times New Roman"
+
 
 vegetables = ['Carpetweed', 'Crabgrass', 'Goosegrass', 'Morningglory', 'Nutsedge', 'PalmerAmaranth',
               'Purslane', 'Ragweed', 'Sicklepod', 'SpottedSpurge', 'SpurredAnoda', 'Swinecress']
@@ -87,5 +89,5 @@ for i in range(len(vegetables)):
 
 ax.set_title("Similarity Matrix over Different Species")
 fig.tight_layout()
-plt.savefig('similarity.png')
+plt.savefig('similarity.pdf')
 plt.show()

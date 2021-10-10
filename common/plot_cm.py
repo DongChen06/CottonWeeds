@@ -2,9 +2,9 @@ import seaborn as sn
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+plt.rcParams["font.family"] = "Times New Roman"
 
-
-conf_mat = np.genfromtxt('../mnasnet_w.csv', delimiter=',')
+conf_mat = np.genfromtxt('../similarity_matrix.csv', delimiter=',')
 
 # Class label names
 class_names = ['Carpetweeds', 'Crabgrass', 'Eclipta', 'Goosegrass', 'Morningglory', 'Nutsedge',
@@ -19,5 +19,5 @@ sn.set(font_scale=1.0)
 sn.heatmap(df_cm, annot=True, annot_kws={"size": 12}, cmap='Greens',  fmt='0.2f')
 plt.xticks(rotation=45, fontsize=12)
 plt.tight_layout()
-plt.savefig('mnasnet_w.png')
+plt.savefig('similarity.pdf')
 plt.show()
