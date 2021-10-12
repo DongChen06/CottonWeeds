@@ -9,12 +9,10 @@ Deep learning models for classification of 15 common weeds in the southern U.S. 
 - Scikit-learn
 
 
-## Dataset Preparing and Downloading
-- The weed dataset publicly available at https://www.kaggle.com/yuzhenlu/cottonweedid15
+## Dataset
+- The weed image dataset is publicly available at https://www.kaggle.com/yuzhenlu/cottonweedid15
 
 - To prepare your own dataset, you can run 
-
-- You can also have a try on our open-sourced dataset at: 
 
 
 
