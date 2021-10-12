@@ -1,5 +1,5 @@
 # CottonWeeds
-Deep Learning Models for cotton&weeds classification.
+Deep learning models for classification of 15 common weeds in the southern U.S. cotton production systems.
 
 ## requirements
 - pytorch
@@ -10,6 +10,8 @@ Deep Learning Models for cotton&weeds classification.
 
 
 ## Dataset Preparing and Downloading
+- The weed dataset publicly available at https://www.kaggle.com/yuzhenlu/cottonweedid15
+
 - To prepare your own dataset, you can run 
 
 - You can also have a try on our open-sourced dataset at: 
@@ -20,14 +22,14 @@ Deep Learning Models for cotton&weeds classification.
 - To train the models, just specify the name of the models, and then run `python train.py`.
 - To test the images,  just specify the name of the models, and then run `python test.py`.
 - To eval new data,  just specify the name of the models, and then run `python eval.py`.
--To visualize the training, run `tensorboard --logdir=runs`
+- To visualize the training, run `tensorboard --logdir=runs`
 
 
 ## Citation
 ```
 @misc{chen2021performance,
       title={Performance Evaluation of Deep Transfer Learning on Multiclass Identification of Common Weed Species in Cotton Production Systems}, 
-      author={Dong Chen and Yuzhen Lu and Zhaojiang Li and Sierra Young},
+      author={Dong Chen, Yuzhen Lu, Zhaojiang Li, Sierra Young},
       year={2021},
       eprint={2110.04960},
       archivePrefix={arXiv},
