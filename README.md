@@ -22,6 +22,20 @@ Deep Learning Models for cotton&weeds classification.
 - To eval new data,  just specify the name of the models, and then run `python eval.py`.
 -To visualize the training, run `tensorboard --logdir=runs`
 
+
+## Citation
+```
+@misc{chen2021performance,
+      title={Performance Evaluation of Deep Transfer Learning on Multiclass Identification of Common Weed Species in Cotton Production Systems}, 
+      author={Dong Chen and Yuzhen Lu and Zhaojiang Li and Sierra Young},
+      year={2021},
+      eprint={2110.04960},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
+
+
 ## Reference
 - [fine-tuning.pytorch](https://github.com/meliketoy/fine-tuning.pytorch#fine-tuningpytorch)
 - [FINETUNING TORCHVISION MODELS](https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html)
