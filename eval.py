@@ -7,7 +7,7 @@ def parse_args():
     parser.add_argument('--model_name', type=str, required=False, default='alexnet',
                         help="choose a deep learning model")
     parser.add_argument('--EVAL_DIR', type=str, required=False,
-                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/test',
+                        default='/home/dong9/PycharmProjects/CottonWeeds/DATASET',
                         help="dir for the testing image")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="random seed")
@@ -42,12 +42,12 @@ random.seed(args.seeds)
 np.random.seed(args.seeds)
 
 
-EVAL_DIR = args.EVAL_DIR
+EVAL_DIR = args.EVAL_DIR + '/DATA_{}'.format(args.seeds) + '/test'
 model_name = args.model_name
 if args.use_weighting:
-    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
+    EVAL_MODEL = './models_1/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
 else:
-    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
+    EVAL_MODEL = './models_1/' + model_name + '_' + str(args.seeds) + ".pth"
 img_size = args.img_size
 bs = args.batch_size
 
@@ -76,7 +76,7 @@ eval_loader = data.DataLoader(eval_dataset, batch_size=bs, shuffle=True,
                               num_workers=num_cpu, pin_memory=True)
 
 # Enable gpu mode, if cuda available
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 # Number of classes and dataset-size
 num_classes = len(eval_dataset.classes)

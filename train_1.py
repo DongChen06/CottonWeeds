@@ -6,12 +6,12 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser(description='Train CottonWeed Classifier')
     parser.add_argument('--train_directory', type=str, required=False,
-                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/train',
+                        default='/home/dong9/PycharmProjects/CottonWeeds/DATASET',
                         help="training directory")
     parser.add_argument('--valid_directory', type=str, required=False,
-                        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset/val',
+                        default='/home/dong9/PycharmProjects/CottonWeeds/DATASET',
                         help="validation directory")
-    parser.add_argument('--model_name', type=str, required=False, default='alexnet',
+    parser.add_argument('--model_name', type=str, required=False, default='inception',
                         help="choose a deep learning model")
     parser.add_argument('--train_mode', type=str, required=False, default='finetune',
                         help="Set training mode: finetune, transfer, scratch")
@@ -71,11 +71,11 @@ train_mode = args.train_mode
 num_epochs = args.epochs
 bs = args.batch_size
 img_size = args.img_size
-train_directory = args.train_directory
-valid_directory = args.valid_directory
+train_directory = args.train_directory + '/DATA_{}'.format(args.seeds) + '/train'
+valid_directory = args.valid_directory + '/DATA_{}'.format(args.seeds) + '/val'
 
-if not os.path.isfile('train_performance.csv'):
-    with open('train_performance.csv', mode='w') as csv_file:
+if not os.path.isfile('train_performance_1.csv'):
+    with open('train_performance_1.csv', mode='w') as csv_file:
         fieldnames = ['Index', 'Model', 'Training Time', 'Trainable Parameters', 'Best Train Acc', 'Best Train Epoch',
                       'Best Val Acc', 'Best Val Epoch']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -84,9 +84,9 @@ if not os.path.isfile('train_performance.csv'):
 # Set the model save path
 if args.use_weighting:
     print(True)
-    PATH = model_name + "_" + str(args.seeds) + "_w" + ".pth"
+    PATH = 'models_1/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
 else:
-    PATH = model_name + "_" + str(args.seeds) + ".pth"
+    PATH = 'models_1/' + model_name + "_" + str(args.seeds) + ".pth"
 # Number of workers
 num_cpu = 32  # multiprocessing.cpu_count()
 
@@ -260,7 +260,7 @@ else:
 
 # Transfer the model to GPU
 # Set default device as gpu, if available
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 # model_ft = nn.DataParallel(model_ft)
 model_ft = model_ft.to(device)
 
@@ -314,9 +314,9 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
 
     if args.use_weighting:
         # Tensorboard summary
-        writer = SummaryWriter(log_dir=('./runs/' + model_name + '_w' + '/' + str(args.seeds)))
+        writer = SummaryWriter(log_dir=('./runs_1/' + model_name + '_w' + '/' + str(args.seeds)))
     else:
-        writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(args.seeds)))
+        writer = SummaryWriter(log_dir=('./runs_1/' + model_name + '/' + str(args.seeds)))
 
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
@@ -386,7 +386,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
 
     time_elapsed = time.time() - since
 
-    with open('train_performance.csv', 'a+', newline='') as write_obj:
+    with open('train_performance_1.csv', 'a+', newline='') as write_obj:
         csv_writer = csv.writer(write_obj)
         csv_writer.writerow([args.seeds, model_name, '{:.0f}m'.format(
             time_elapsed // 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy()),

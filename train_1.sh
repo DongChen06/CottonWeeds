@@ -1,4 +1,4 @@
-# bash -i train_1_1.sh
+# bash -i train_1.sh
 
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 0
 cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 1

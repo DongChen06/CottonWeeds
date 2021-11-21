@@ -2,7 +2,6 @@
 Partition dataset of images into training, validation and testing sets
 """
 import os
-import re
 from shutil import copyfile
 import argparse
 import math
@@ -35,7 +34,6 @@ def iterate_dir(source, dest, ratio_list):
                     images.append(os.path.join(dirpath, filename))
 
         num_images = len(images)
-
         num_val_images = math.ceil(ratio_list[1] * num_images)
         num_test_images = math.ceil(ratio_list[2] * num_images)
         print("class", "total images", "n_train", "n_val", "n_test",
@@ -73,7 +71,7 @@ def main():
         help='Path to the output folder where the train and test dirs should be created. '
              'Defaults to the same directory as IMAGEDIR.',
         type=str,
-        default='/home/dong9/Downloads/DATA_0820/CottonWeedDataset')
+        default='/home/dong9/PycharmProjects/CottonWeeds/DATASET')
     parser.add_argument(
         '-r', '--ratio_list',
         help='The ratio of the number of test images over the total number of images. The default is 0.1.',
@@ -81,11 +79,12 @@ def main():
         type=list)
     args = parser.parse_args()
 
-    if args.outputDir is None:
-        args.outputDir = args.imageDir
+    for i in range(5):
+        random.seed(i)
+        outputDir = args.outputDir + '/DATA_{}'.format(i)
 
-    # Now we are ready to start the iteration
-    iterate_dir(args.imageDir, args.outputDir, args.ratio_list)
+        # Now we are ready to start the iteration
+        iterate_dir(args.imageDir, outputDir, args.ratio_list)
 
 
 if __name__ == '__main__':
