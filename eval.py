@@ -113,9 +113,11 @@ print('Accuracy of the network on the {:d} test images: {:.2f}%'.format(dsize, o
 # Confusion matrix
 conf_mat = confusion_matrix(lbllist.numpy(), predlist.numpy())
 print('Confusion Matrix')
-print('-' * 16)
-print(conf_mat, '\n')
+# print('-' * 16)
+# print(conf_mat, '\n')
 
+if not os.path.exists('Confusing_Matrices'):
+    os.mkdir('Confusing_Matrices')
 if not os.path.exists('Confusing_Matrices/plots/'):
     os.mkdir('Confusing_Matrices/plots/')
 if not os.path.exists('Confusing_Matrices/csv/'):
@@ -123,10 +125,10 @@ if not os.path.exists('Confusing_Matrices/csv/'):
 
 
 plt.figure(figsize=(10, 6))
-df_cm = pd.DataFrame(conf_mat / conf_mat.sum(1), index=class_names,
+df_cm = pd.DataFrame(conf_mat, index=class_names,
                      columns=class_names)
 sn.set(font_scale=1.0)
-sn.heatmap(df_cm, annot=True, annot_kws={"size": 12}, cmap='Greens',  fmt='0.3f')
+sn.heatmap(df_cm, annot=True, annot_kws={"size": 12}, cmap='Greens')
 plt.xticks(rotation=75, fontsize=14)
 plt.tight_layout()
 if args.use_weighting:

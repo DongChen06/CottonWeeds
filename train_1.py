@@ -260,7 +260,7 @@ else:
 
 # Transfer the model to GPU
 # Set default device as gpu, if available
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # model_ft = nn.DataParallel(model_ft)
 model_ft = model_ft.to(device)
 
