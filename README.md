@@ -11,10 +11,7 @@ Deep learning models for classification of 15 common weeds in the southern U.S. 
 
 ## Dataset
 - The weed image dataset is publicly available at https://www.kaggle.com/yuzhenlu/cottonweedid15
-
-- To prepare your own dataset, you can run 
-
-
+- To prepare your own dataset, you can run `python common/partition_imgs_Ubuntu.py`
 
 ## Usage
 - To train the models, just specify the name of the models, and then run `python train.py`.
