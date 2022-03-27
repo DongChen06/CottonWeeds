@@ -11,13 +11,15 @@ def parse_args():
     parser.add_argument('--valid_directory', type=str, required=False,
                         default='/home/dong9/PycharmProjects/CottonWeeds/DATASET',
                         help="validation directory")
-    parser.add_argument('--model_name', type=str, required=False, default='inception',
+    parser.add_argument('--model_name', type=str, required=False, default='resnext50_32x4d',
                         help="choose a deep learning model")
     parser.add_argument('--train_mode', type=str, required=False, default='finetune',
                         help="Set training mode: finetune, transfer, scratch")
     parser.add_argument('--num_classes', type=int, required=False, default=15, help="Number of Classes")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="random seed")
+    parser.add_argument('--device', type=int, required=False, default=0,
+                        help="GPU device")
     parser.add_argument('--epochs', type=int, required=False, default=50, help="Training Epochs")
     parser.add_argument('--batch_size', type=int, required=False, default=12, help="Training batch size")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
@@ -60,7 +62,6 @@ from torch.optim import lr_scheduler
 import torch.nn as nn
 from torchsummary import summary
 import time, copy
-import multiprocessing
 import pretrainedmodels  # for inception-v4 and xception
 from efficientnet_pytorch import EfficientNet
 
@@ -74,8 +75,8 @@ img_size = args.img_size
 train_directory = args.train_directory + '/DATA_{}'.format(args.seeds) + '/train'
 valid_directory = args.valid_directory + '/DATA_{}'.format(args.seeds) + '/val'
 
-if not os.path.isfile('train_performance_1.csv'):
-    with open('train_performance_1.csv', mode='w') as csv_file:
+if not os.path.isfile('train_performance.csv'):
+    with open('train_performance.csv', mode='w') as csv_file:
         fieldnames = ['Index', 'Model', 'Training Time', 'Trainable Parameters', 'Best Train Acc', 'Best Train Epoch',
                       'Best Val Acc', 'Best Val Epoch']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -84,9 +85,13 @@ if not os.path.isfile('train_performance_1.csv'):
 # Set the model save path
 if args.use_weighting:
     print(True)
-    PATH = 'models_1/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
+    PATH = 'models/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
 else:
-    PATH = 'models_1/' + model_name + "_" + str(args.seeds) + ".pth"
+    PATH = 'models/' + model_name + "_" + str(args.seeds) + ".pth"
+
+if not os.path.exists('models'):
+    os.mkdir('models')
+
 # Number of workers
 num_cpu = 32  # multiprocessing.cpu_count()
 
@@ -144,6 +149,16 @@ model_ft = None
 if model_name == 'resnet18':
     # Modify fc layers to match num_classes
     model_ft = models.resnet18(pretrained=True)
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'resnext50_32x4d':
+    torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
+    model_ft = torch.hub.load('pytorch/vision:v0.10.0', 'resnext50_32x4d', pretrained=True)
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'resnext101_32x8d':
+    torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
+    model_ft = torch.hub.load('pytorch/vision:v0.10.0', 'resnext101_32x8d', pretrained=True)
     num_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_ftrs, num_classes)
 elif model_name == 'resnet50':
@@ -259,8 +274,12 @@ else:
     exit()
 
 # Transfer the model to GPU
-# Set default device as gpu, if available
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+if args.device == 0:
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+elif args.device == 1:
+    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+else:
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # model_ft = nn.DataParallel(model_ft)
 model_ft = model_ft.to(device)
 
@@ -270,7 +289,7 @@ for num, (name, param) in enumerate(model_ft.named_parameters()):
     print(num, name, param.requires_grad)
 if model_name == 'inception':
     summary(model_ft, input_size=(3, 299, 299))
-elif model_name == 'densenet121' or 'densenet161':
+elif model_name == 'densenet121' or 'densenet161' or 'resnext50_32x4d' or 'resnext101_32x8d':
     pass
 else:
     summary(model_ft, input_size=(3, img_size, img_size))
@@ -386,7 +405,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
 
     time_elapsed = time.time() - since
 
-    with open('train_performance_1.csv', 'a+', newline='') as write_obj:
+    with open('train_performance.csv', 'a+', newline='') as write_obj:
         csv_writer = csv.writer(write_obj)
         csv_writer.writerow([args.seeds, model_name, '{:.0f}m'.format(
             time_elapsed // 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy()),

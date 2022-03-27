@@ -1,11 +1,22 @@
-# bash -i train_1.sh
+# bash -i run_scripts/train_1.sh
 
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 0
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 1
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 2
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 3
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 4
-#
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 4 --device 1
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 4 --device 1
 #
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet50 --seeds 0
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet50 --seeds 1
@@ -77,11 +88,11 @@
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name densenet169 --seeds 4
 
 
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 0
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 2
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 3
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 4
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 0
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 2
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 3
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 4
 
 
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inceptionv4 --seeds 0
@@ -263,11 +274,11 @@ cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name densenet169 --seeds 4 --use_weighting True
 
 
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 0 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 2 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 3 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 4 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 0 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 2 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 3 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inception --seeds 4 --use_weighting True
 
 
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name inceptionv4 --seeds 0 --use_weighting True
@@ -371,3 +382,15 @@ cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name efficientnet-b5 --seeds 2 --use_weighting True
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name efficientnet-b5 --seeds 3 --use_weighting True
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name efficientnet-b5 --seeds 4 --use_weighting True
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 4 --device 1 --use_weighting True
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 4 --device 1 --use_weighting True
