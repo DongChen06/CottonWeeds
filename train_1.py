@@ -11,7 +11,7 @@ def parse_args():
     parser.add_argument('--valid_directory', type=str, required=False,
                         default='/home/dong9/PycharmProjects/CottonWeeds/DATASET',
                         help="validation directory")
-    parser.add_argument('--model_name', type=str, required=False, default='resnext50_32x4d',
+    parser.add_argument('--model_name', type=str, required=False, default='RepVGG-A0',
                         help="choose a deep learning model")
     parser.add_argument('--train_mode', type=str, required=False, default='finetune',
                         help="Set training mode: finetune, transfer, scratch")
@@ -64,6 +64,11 @@ from torchsummary import summary
 import time, copy
 import pretrainedmodels  # for inception-v4 and xception
 from efficientnet_pytorch import EfficientNet
+from RepVGG.repvgg import repvgg_model_convert, create_RepVGG_A0, create_RepVGG_A1, create_RepVGG_A2, create_RepVGG_B0, create_RepVGG_B1, create_RepVGG_B2
+
+
+import sys
+sys.path.append("RepVGG/")
 
 
 num_classes = args.num_classes
@@ -269,6 +274,36 @@ elif model_name == 'efficientnet-b5':
     model_ft = EfficientNet.from_pretrained('efficientnet-b5', num_classes=num_classes)
 elif model_name == 'efficientnet-b6':
     model_ft = EfficientNet.from_pretrained('efficientnet-b6', num_classes=num_classes)
+elif model_name == 'RepVGG-A0':
+    model_ft = create_RepVGG_A0(deploy=False)
+    model_ft.load_state_dict(torch.load('RepVGG/RepVGG-A0-train.pth'))  # or train from scratch
+    num_ftrs = model_ft.linear.in_features
+    model_ft.linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'RepVGG-A1':
+    model_ft = create_RepVGG_A1(deploy=False)
+    model_ft.load_state_dict(torch.load('RepVGG/RepVGG-A1-train.pth'))  # or train from scratch
+    num_ftrs = model_ft.linear.in_features
+    model_ft.linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'RepVGG-A2':
+    model_ft = create_RepVGG_A2(deploy=False)
+    model_ft.load_state_dict(torch.load('RepVGG/RepVGG-A2-train.pth'))  # or train from scratch
+    num_ftrs = model_ft.linear.in_features
+    model_ft.linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'RepVGG-B0':
+    model_ft = create_RepVGG_B0(deploy=False)
+    model_ft.load_state_dict(torch.load('RepVGG/RepVGG-B0-train.pth'))  # or train from scratch
+    num_ftrs = model_ft.linear.in_features
+    model_ft.linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'RepVGG-B1':
+    model_ft = create_RepVGG_B1(deploy=False)
+    model_ft.load_state_dict(torch.load('RepVGG/RepVGG-B1-train.pth'))  # or train from scratch
+    num_ftrs = model_ft.linear.in_features
+    model_ft.linear = nn.Linear(num_ftrs, num_classes)
+elif model_name == 'RepVGG-B2':
+    model_ft = create_RepVGG_B2(deploy=False)
+    model_ft.load_state_dict(torch.load('RepVGG/RepVGG-B2-train.pth'))  # or train from scratch
+    num_ftrs = model_ft.linear.in_features
+    model_ft.linear = nn.Linear(num_ftrs, num_classes)
 else:
     print("Invalid model name, exiting...")
     exit()

@@ -11,6 +11,8 @@ def parse_args():
                         help="dir for the testing image")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="random seed")
+    parser.add_argument('--device', type=int, required=False, default=0,
+                        help="GPU device")
     parser.add_argument('--batch_size', type=int, required=False, default=8, help="Training batch size")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
     parser.add_argument('--use_weighting', type=bool, required=False, default=False, help="use weighted cross entropy or not")
@@ -45,9 +47,9 @@ np.random.seed(args.seeds)
 EVAL_DIR = args.EVAL_DIR + '/DATA_{}'.format(args.seeds) + '/test'
 model_name = args.model_name
 if args.use_weighting:
-    EVAL_MODEL = './models_1/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
+    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + '_w' + ".pth"
 else:
-    EVAL_MODEL = './models_1/' + model_name + '_' + str(args.seeds) + ".pth"
+    EVAL_MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
 img_size = args.img_size
 bs = args.batch_size
 
@@ -76,7 +78,12 @@ eval_loader = data.DataLoader(eval_dataset, batch_size=bs, shuffle=True,
                               num_workers=num_cpu, pin_memory=True)
 
 # Enable gpu mode, if cuda available
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+if args.device == 0:
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+elif args.device == 1:
+    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+else:
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Number of classes and dataset-size
 num_classes = len(eval_dataset.classes)

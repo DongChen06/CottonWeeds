@@ -1,4 +1,4 @@
-# bash -i run_scripts/train_1.sh
+# bash -i run_scripts/train.sh
 
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 0
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 1
@@ -6,18 +6,55 @@
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 3
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet18 --seeds 4
 
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 0 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 1 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 2 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 3 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 4 --device 1
-
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 0 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 1 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 2 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 3 --device 1
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 4 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 0 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 1 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 2 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 3 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 4 --device 1
 #
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 0 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 1 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 2 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 3 --device 1
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 4 --device 1
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 4 --device 1
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 4 --device 1
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 4 --device 1
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 4 --device 1
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 4 --device 1
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 0 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 1 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 2 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 3 --device 1
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 4 --device 1
+
+
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet50 --seeds 0
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet50 --seeds 1
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnet50 --seeds 2
@@ -383,14 +420,50 @@ cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name efficientnet-b5 --seeds 3 --use_weighting True
 #cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name efficientnet-b5 --seeds 4 --use_weighting True
 
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 0 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 1 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 2 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 3 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 4 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 0 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 1 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 2 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 3 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext50_32x4d --seeds 4 --device 1 --use_weighting True
+#
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 0 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 1 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 2 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 3 --device 1 --use_weighting True
+#cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 4 --device 1 --use_weighting True
 
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 0 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 1 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 2 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 3 --device 1 --use_weighting True
-cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name resnext101_32x8d --seeds 4 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A0 --seeds 4 --device 1 --use_weighting True
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A1 --seeds 4 --device 1 --use_weighting True
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-A2 --seeds 4 --device 1 --use_weighting True
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B0 --seeds 4 --device 1 --use_weighting True
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B1 --seeds 4 --device 1 --use_weighting True
+
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 0 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 1 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 2 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 3 --device 1 --use_weighting True
+cd /home/dong9/PycharmProjects/CottonWeeds ; /home/dong9/anaconda3/envs/wind/bin/python train_1.py --model_name RepVGG-B2 --seeds 4 --device 1 --use_weighting True

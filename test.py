@@ -11,7 +11,10 @@ def parse_args():
                         help="dir for the testing image")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="dir for the testing image")
+    parser.add_argument('--device', type=int, required=False, default=0,
+                        help="GPU device")
     parser.add_argument('--img_size', type=int, required=False, default=512, help="Image Size")
+    parser.add_argument('--use_weighting', type=bool, required=False, default=False, help="use weighted cross entropy or not")
     args = parser.parse_args()
     return args
 
@@ -39,7 +42,11 @@ IMDIR = args.IMDIR
 model_name = args.model_name
 img_size = args.img_size
 since = time.time()
-MODEL = './models/' + model_name + '_' + str(args.seeds) + ".pth"
+if args.use_weighting:
+    print(True)
+    PATH = 'models/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
+else:
+    PATH = 'models/' + model_name + "_" + str(args.seeds) + ".pth"
 
 if not os.path.isfile('test_performance.csv'):
     with open('test_performance.csv', mode='w') as csv_file:
@@ -48,7 +55,7 @@ if not os.path.isfile('test_performance.csv'):
         writer.writeheader()
 
 # Load the model for testing
-model = torch.load(MODEL)
+model = torch.load(PATH)
 model.eval()
 
 # Retrieve 15 random images from directory
@@ -64,7 +71,12 @@ preprocess = transforms.Compose([
                          [0.229, 0.224, 0.225])])
 
 # Enable gpu mode, if cuda available
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+if args.device == 0:
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+elif args.device == 1:
+    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+else:
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Perform prediction and plot results
 with torch.no_grad():
