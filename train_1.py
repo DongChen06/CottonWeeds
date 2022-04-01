@@ -18,6 +18,8 @@ def parse_args():
     parser.add_argument('--num_classes', type=int, required=False, default=15, help="Number of Classes")
     parser.add_argument('--seeds', type=int, required=False, default=0,
                         help="random seed")
+    parser.add_argument('--is_augmentation', type=bool, required=False, default=True,
+                        help="use data augmentation or not")
     parser.add_argument('--device', type=int, required=False, default=0,
                         help="GPU device")
     parser.add_argument('--epochs', type=int, required=False, default=50, help="Training Epochs")
@@ -64,7 +66,7 @@ from torchsummary import summary
 import time, copy
 import pretrainedmodels  # for inception-v4 and xception
 from efficientnet_pytorch import EfficientNet
-from RepVGG.repvgg import repvgg_model_convert, create_RepVGG_A0, create_RepVGG_A1, create_RepVGG_A2, create_RepVGG_B0, create_RepVGG_B1, create_RepVGG_B2
+from RepVGG.repvgg import create_RepVGG_A0, create_RepVGG_A1, create_RepVGG_A2, create_RepVGG_B0, create_RepVGG_B1, create_RepVGG_B2
 
 
 import sys
@@ -90,9 +92,15 @@ if not os.path.isfile('train_performance.csv'):
 # Set the model save path
 if args.use_weighting:
     print(True)
-    PATH = 'models/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
+    if args.is_augmentation:
+        PATH = 'models/' + model_name + "_" + str(args.seeds) + "_wA" + ".pth"
+    else:
+        PATH = 'models/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
 else:
-    PATH = 'models/' + model_name + "_" + str(args.seeds) + ".pth"
+    if args.is_augmentation:
+        PATH = 'models/' + model_name + "_" + str(args.seeds) + "_A" + ".pth"
+    else:
+        PATH = 'models/' + model_name + "_" + str(args.seeds) + ".pth"
 
 if not os.path.exists('models'):
     os.mkdir('models')
@@ -101,22 +109,40 @@ if not os.path.exists('models'):
 num_cpu = 32  # multiprocessing.cpu_count()
 
 # Applying transforms to the data
-image_transforms = {
-    'train': transforms.Compose([
-        transforms.RandomResizedCrop(size=img_size),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406],
-                             [0.229, 0.224, 0.225])
-    ]),
-    'valid': transforms.Compose([
-        transforms.Resize(size=img_size),
-        transforms.CenterCrop(size=img_size),
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406],
-                             [0.229, 0.224, 0.225])
-    ])
-}
+if args.is_augmentation:
+    image_transforms = {
+        'train': transforms.Compose([
+            transforms.RandomResizedCrop(size=img_size),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406],
+                                 [0.229, 0.224, 0.225])
+        ]),
+        'valid': transforms.Compose([
+            transforms.Resize(size=img_size),
+            transforms.CenterCrop(size=img_size),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406],
+                                 [0.229, 0.224, 0.225])
+        ])
+    }
+else:
+    image_transforms = {
+        'train': transforms.Compose([
+            transforms.Resize(size=img_size),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406],
+                                 [0.229, 0.224, 0.225])
+        ]),
+        'valid': transforms.Compose([
+            transforms.Resize(size=img_size),
+            transforms.CenterCrop(size=img_size),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406],
+                                 [0.229, 0.224, 0.225])
+        ])
+    }
+
 
 # Load data from folders
 dataset = {
@@ -134,7 +160,7 @@ dataset_sizes = {
 dataloaders = {
     'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
                              num_workers=num_cpu, pin_memory=True, drop_last=True,
-                             worker_init_fn=seed_worker, generator = g),
+                             worker_init_fn=seed_worker, generator=g),
     'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
                              num_workers=num_cpu, pin_memory=True, drop_last=True,
                              worker_init_fn=seed_worker, generator=g)}
@@ -357,7 +383,7 @@ exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 print("\nTraining:-\n")
 
 
-def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
+def train_model(model, criterion, optimizer, scheduler, num_epochs=50):
     since = time.time()
 
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -368,9 +394,15 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
 
     if args.use_weighting:
         # Tensorboard summary
-        writer = SummaryWriter(log_dir=('./runs_1/' + model_name + '_w' + '/' + str(args.seeds)))
+        if args.is_augmentation:
+            writer = SummaryWriter(log_dir=('./runs/' + model_name + '_wA' + '/' + str(args.seeds)))
+        else:
+            writer = SummaryWriter(log_dir=('./runs/' + model_name + '_w' + '/' + str(args.seeds)))
     else:
-        writer = SummaryWriter(log_dir=('./runs_1/' + model_name + '/' + str(args.seeds)))
+        if args.is_augmentation:
+            writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(args.seeds) + '_A'))
+        else:
+            writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(args.seeds)))
 
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
