@@ -6,7 +6,7 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser(description='Train CottonWeed Classifier')
     parser.add_argument('--train_directory', type=str, required=False,
-                        default='/home/dong9/Downloads/DATA_1012', help="training directory")
+                        default='/home/dong9/PycharmProjects/CottonWeeds/DATASET', help="training directory")
     parser.add_argument('--model_name', type=str, required=False, default='alexnet',
                         help="choose a deep learning model")
     parser.add_argument('--train_mode', type=str, required=False, default='finetune',
@@ -69,8 +69,8 @@ bs = args.batch_size
 img_size = args.img_size
 train_directory = args.train_directory
 
-if not os.path.isfile('train_performance.csv'):
-    with open('train_performance.csv', mode='w') as csv_file:
+if not os.path.isfile('train_performance_cv.csv'):
+    with open('train_performance_cv.csv', mode='w') as csv_file:
         fieldnames = ['Index', 'Model', 'Training Time', 'Trainable Parameters', 'Best Train Acc', 'Best Train Epoch',
                       'Best Val Acc', 'Best Val Epoch']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -78,9 +78,9 @@ if not os.path.isfile('train_performance.csv'):
 
 # Set the model save path
 if args.use_weighting:
-    PATH = 'models/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
+    PATH = 'models_cv/' + model_name + "_" + str(args.seeds) + "_w" + ".pth"
 else:
-    PATH = 'models/' + model_name + "_" + str(args.seeds) + ".pth"
+    PATH = 'models_cv/' + model_name + "_" + str(args.seeds) + ".pth"
 # Number of workers
 num_cpu = 32  # multiprocessing.cpu_count()
 
@@ -107,15 +107,15 @@ k_folds = 5
 kfold = KFold(n_splits=k_folds, shuffle=True)
 
 for fold, (train_idx,test_idx) in enumerate(kfold.split(dataset)):
-    if not os.path.exists('models/'):
-        os.mkdir('models/')
+    if not os.path.exists('models_cv/'):
+        os.mkdir('models_cv/')
 
     # Set the model save path
     if args.use_weighting:
         print(True)
-        PATH = 'models/' + model_name + "_" + str(fold) + "_w" + ".pth"
+        PATH = 'models_cv/' + model_name + "_" + str(fold) + "_w" + ".pth"
     else:
-        PATH = 'models/' + model_name + "_" + str(fold) + ".pth"
+        PATH = 'models_cv/' + model_name + "_" + str(fold) + ".pth"
 
     print('------------fold no---------{}----------------------'.format(fold))
     train_subsampler = torch.utils.data.SubsetRandomSampler(train_idx)
@@ -304,9 +304,9 @@ for fold, (train_idx,test_idx) in enumerate(kfold.split(dataset)):
 
         if args.use_weighting:
             # Tensorboard summary
-            writer = SummaryWriter(log_dir=('./runs/' + model_name + '_w' + '/' + str(fold)))
+            writer = SummaryWriter(log_dir=('./runs_cv/' + model_name + '_w' + '/' + str(fold)))
         else:
-            writer = SummaryWriter(log_dir=('./runs/' + model_name + '/' + str(fold)))
+            writer = SummaryWriter(log_dir=('./runs_cv/' + model_name + '/' + str(fold)))
 
         for epoch in range(num_epochs):
             print('Epoch {}/{}'.format(epoch, num_epochs - 1))
@@ -375,10 +375,10 @@ for fold, (train_idx,test_idx) in enumerate(kfold.split(dataset)):
 
         time_elapsed = time.time() - since
 
-        with open('train_performance.csv', 'a+', newline='') as write_obj:
+        with open('train_performance_cv.csv', 'a+', newline='') as write_obj:
             csv_writer = csv.writer(write_obj)
             csv_writer.writerow([fold, model_name, '{:.0f}m'.format(
-                time_elapsed // 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy()  * 100),
+                time_elapsed // 60), pytorch_total_params, '{:4f}'.format(best_train_acc.cpu().numpy() * 100),
                                  best_train_epoch, '{:4f}'.format(best_val_acc.cpu().numpy()  * 100), best_val_epoch])
 
         # load best model weights
