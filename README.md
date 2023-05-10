@@ -21,15 +21,16 @@ Deep learning models for classification of 15 common weeds in the southern U.S. 
 
 
 ## Citation
-Detailed documentation of deep transfer learning for weed classification of the cotton weed dataset is given in our arXiv paper: https://arxiv.org/abs/2110.04960. If you use the dataset or models in a publication, please cite this paper.
+Detailed documentation of deep transfer learning for weed classification of the cotton weed dataset is given in our paper: https://www.sciencedirect.com/science/article/pii/S0168169922004082. If you use the dataset or models in a publication, please cite this paper.
 ```
-@misc{chen2021performance,
-      title={Performance Evaluation of Deep Transfer Learning on Multiclass Identification of Common Weed Species in Cotton Production Systems}, 
-      author={Dong Chen, Yuzhen Lu, Zhaojiang Li, Sierra Young},
-      year={2021},
-      eprint={2110.04960},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{chen2022performance,
+  title={Performance evaluation of deep transfer learning on multi-class identification of common weed species in cotton production systems},
+  author={Chen, Dong and Lu, Yuzhen and Li, Zhaojian and Young, Sierra},
+  journal={Computers and Electronics in Agriculture},
+  volume={198},
+  pages={107091},
+  year={2022},
+  publisher={Elsevier}
 }
 ```
 
